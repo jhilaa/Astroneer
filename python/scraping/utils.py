@@ -65,20 +65,21 @@ def create_json_file (dir_name, dataset_name, json_data):
         json.dump(json_data, f, ensure_ascii=False, indent=2)
     print(f"     ✅ Fichier généré : {file_name}")
     # On ne garde que les 2 derniers fichiers
-    cleanup_json (subfolder, keep=2)
+    cleanup_json (subfolder, dataset_name, keep=2)
    
         
 # ménage dans le répertoire cible
-def cleanup_json(folder: str, keep: int = 5):
-    # Liste tous les fichiers .json
-    files = sorted(Path(folder).glob("*.json"),
+def cleanup_json(folder: str, begin_with: str, keep: int = 5):
+    # Liste tous les fichiers JSON qui commencent par begin_with
+    pattern = f"{begin_with}*.json"
+    files = sorted(Path(folder).glob(pattern),
                    key=lambda f: f.stat().st_mtime,
                    reverse=True)
     
     # Supprime les plus anciens au-delà du quota
     for old_file in files[keep:]:
         old_file.unlink()
-        print(f"Supprimé : {old_file.name}")
+        print(f"🗑️ Supprimé : {old_file.name}")
         
 import requests
 import json

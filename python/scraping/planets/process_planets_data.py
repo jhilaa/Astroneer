@@ -22,7 +22,15 @@ def planets_data_to_json(soup: BeautifulSoup):
     # On construit le tableau des planète à partir des données extraites
     planets = []
     for tr in table_rows[1:]:  # sauter l'entête
-        data = [td.get_text(separator=";", strip=True) for td in tr.find_all("td")]
+        #data = [td.get_text(separator=";", strip=True) for td in tr.select("th, td")]       
+        data = []
+        for index, td in enumerate (tr.select("th, td")):
+            data.append(td.get_text(separator=";", strip=True))
+            # cas particulier du core symbol
+            if (index == 8) :
+                icon_data = td.select_one("a:has(img)")
+                img = icon_data.select_one("img")
+                core_symbol = img.get("data-src")
         if not data:
             continue
         planet = {
@@ -34,8 +42,8 @@ def planets_data_to_json(soup: BeautifulSoup):
             "difficulty": data[5] if len(data) > 5 else None,
             "solar_power": data[6] if len(data) > 6 else None,
             "wind_power": data[7] if len(data) > 7 else None,
-            "core_symbol": data[8] if len(data) > 8 else None,
-            "core_material": data[9] if len(data) > 9 else None,
+            "core_symbol": core_symbol,
+            "core_material": data[9] if len(data) > 9 else None
         }
         planets.append(planet)
 
