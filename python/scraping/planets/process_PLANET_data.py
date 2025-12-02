@@ -42,7 +42,7 @@ def planets_data_to_json(soup: BeautifulSoup):
             "difficulty": data[5] if len(data) > 5 else None,
             "solar_power": data[6] if len(data) > 6 else None,
             "wind_power": data[7] if len(data) > 7 else None,
-            "core_symbol": core_symbol,
+            "core_symbol_url": core_symbol,
             "core_material": data[9] if len(data) > 9 else None
         }
         planets.append(planet)

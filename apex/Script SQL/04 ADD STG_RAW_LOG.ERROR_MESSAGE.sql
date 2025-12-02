@@ -1,0 +1,2 @@
+alter table "STG_RAW_LOG" add
+("ERROR_MESSAGE" VARCHAR2(250));

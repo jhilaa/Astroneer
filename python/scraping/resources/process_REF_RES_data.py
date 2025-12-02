@@ -6,10 +6,10 @@ from scraping import utils
 from datetime import datetime
 
 
-def refined_resources_data_to_json(soup: BeautifulSoup):
-    print("     ✅ Lancement du script process_refined_resources_data.py")
+def UNI_RES_data_to_json(soup: BeautifulSoup):
+    print("     ✅ Lancement du script process_UNI_RES_data.py")
     
-    refined_resources = []
+    UNI_RES = []
     start = soup.select_one("#Ressources_Raffinées")
     if start:
         table = start.find_next("table")
@@ -19,21 +19,21 @@ def refined_resources_data_to_json(soup: BeautifulSoup):
                 cells = row.find_all("td")
                 icon = cells[0].find("img")
                 resource_name = cells[0].get_text(strip=True)
-                icon_data_src = icon.get("data-src") if icon else None
+                icon_url = icon.get("data-src") if icon else None
                 raw_resource_name = cells[1].get_text(strip=True)  
 
-                refined_resources.append ({
+                UNI_RES.append ({
                     "name" : resource_name,
-                    "icon_data_src" : icon_data_src,
+                    "icon_url" : icon_url,
                     "raw_resource_name" : raw_resource_name
                 })
                 
             script_dir = os.path.dirname(os.path.abspath(__file__)) 
-            utils.create_json_file (dir_name=script_dir, dataset_name="refined_resources", json_data=refined_resources)   
+            utils.create_json_file (dir_name=script_dir, dataset_name="UNI_RES", json_data=UNI_RES)   
             
             # On envoie le JSON au service REST
             headers = {"Content-Type": "application/json"}
-            #response = requests.post(ENDPOINT_REFINED_RESOURCE, json=refined_resources, headers=headers)
+            #response = requests.post(ENDPOINT_REF_RES, json=REF_RES, headers=headers)
 
             # On checke la réponse
             #print("Status:", response.status_code)

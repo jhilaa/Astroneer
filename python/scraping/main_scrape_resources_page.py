@@ -1,9 +1,10 @@
 from scraping import utils
 from scraping.utils import print_log
-from scraping.resources import process_atmospheric_resources_data
-from scraping.resources import process_natural_resources_data
-from scraping.resources import process_refined_resources_data
-from scraping.resources import process_composite_resources_data
+from scraping.resources import process_ATMO_RES_data
+from scraping.resources import process_NAT_RES_data
+from scraping.resources import process_UNI_RES_data
+from scraping.resources import process_COMP_RES_data
+from scraping.resources import process_UNI_RES_data
 
 
 # URL
@@ -16,10 +17,11 @@ def main():
     # Parsing avec BeautifulSoup
     soup = utils.get_soup(URL)
     if soup:
-        process_atmospheric_resources_data.atmospheric_resources_data_to_json(soup)
-        process_natural_resources_data.natural_resources_data_to_json(soup)
-        process_refined_resources_data.refined_resources_data_to_json(soup)
-        process_composite_resources_data.composite_resources_data_to_json(soup)
+        process_ATMO_RES_data.ATMO_RES_data_to_json(soup)
+        process_NAT_RES_data.NAT_RES_data_to_json(soup)
+        process_UNI_RES_data.UNI_RES_data_to_json(soup)
+        process_COMP_RES_data.COMP_RES_data_to_json(soup)
+        process_UNI_RES_data.UNI_RES_data_to_json(soup)
 
         
     print_log("✅ Fin du script principal main_scrap_resources_page.py", 0)

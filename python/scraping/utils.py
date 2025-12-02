@@ -65,7 +65,7 @@ def create_json_file (dir_name, dataset_name, json_data):
         json.dump(json_data, f, ensure_ascii=False, indent=2)
     print(f"     ✅ Fichier généré : {file_name}")
     # On ne garde que les 2 derniers fichiers
-    cleanup_json (subfolder, dataset_name, keep=2)
+    cleanup_json (subfolder, dataset_name, keep=1)
    
         
 # ménage dans le répertoire cible
