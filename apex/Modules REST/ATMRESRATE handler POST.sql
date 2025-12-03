@@ -8,30 +8,30 @@ BEGIN
 
   -- 2. Log "EN COURS" et commit immédiat
   INSERT INTO STG_RAW.LOG (log_id, table_name, log_ts)
-  VALUES (v_log_id, 'STG_RAW.ATMO_RES', SYSTIMESTAMP);
+  VALUES (v_log_id, 'STG_RAW.ATMO_RES_RATE', SYSTIMESTAMP);
   COMMIT;  
 
   BEGIN
     -- 3. Suppression transactionnelle
-    DELETE FROM STG_RAW.ATMO_RES;
+    DELETE FROM STG_RAW.ATMO_RES_RATE;
 
     -- 4. Insert en bloc depuis JSON
-    INSERT INTO STG_RAW.ATMO_RES (
-      LOG_ID, NAME, ICON_URL
+    INSERT INTO STG_RAW.ATMO_RES_RATE (
+      LOG_ID, RESOURCE_NAME, PLANETE, TAUX
     )
-	
     SELECT v_log_id,
-           jt.NAME,
-           jt.ICON_URL
+           jt.RESOURCE_NAME,
+           jt.PLANETE,
+           jt.TAUX
     FROM JSON_TABLE(:body, '$[*]'
       COLUMNS (
-        name        VARCHAR2(100) PATH '$.name',
-        icon_url    VARCHAR2(500)  PATH '$.icon_url'
+        resource_name   VARCHAR2(100) PATH '$.resource_name',
+        planete    		VARCHAR2(500)  PATH '$.planete',
+        taux    		VARCHAR2(500)  PATH '$.taux'
 		)
     ) jt;
+	v_count := SQL%ROWCOUNT;
 	COMMIT;
-
-    v_count := SQL%ROWCOUNT;
 
     UPDATE STG_RAW.LOG
     SET row_count = v_count
