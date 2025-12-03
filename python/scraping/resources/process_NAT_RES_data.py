@@ -13,7 +13,7 @@ def NAT_RES_data_to_json(soup: BeautifulSoup):
     print("     ✅ Lancement du script process_NAT_RES_data.py")
 
     NAT_RES = []
-    NAT_RES_concentration = []
+    NAT_RES_RATE = []
     start = soup.select_one("#Ressources_Naturelles")
     if start:
         table = start.find_next("table")
@@ -34,7 +34,7 @@ def NAT_RES_data_to_json(soup: BeautifulSoup):
                 # Données par planète
                 for i, cell in enumerate(cells[1:]):
                     concentration = cell.get_text(strip=True)
-                    NAT_RES_concentration.append ({
+                    NAT_RES_RATE.append ({
                         "resource_name" : resource_name,
                         "planete": planet_names[i],
                         "taux": concentration})

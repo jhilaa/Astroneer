@@ -1,2 +1,0 @@
-ALTER TABLE STG_RAW_LOG 
-RENAME COLUMN id_log TO log_id;

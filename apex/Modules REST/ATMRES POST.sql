@@ -4,40 +4,44 @@ DECLARE
   v_errmsg VARCHAR2(4000);
 BEGIN
   -- 1. Nouveau log_id
-  SELECT STG_RAW_LOG_SEQ.NEXTVAL INTO v_log_id FROM dual;
+  SELECT STG_RAW.LOG_SEQ.NEXTVAL INTO v_log_id FROM dual;
 
   -- 2. Log "EN COURS" et commit immédiat
-  INSERT INTO STG_RAW_LOG (log_id, table_name, log_ts)
-  VALUES (v_log_id, 'STG_RAW_ATMO_RES', SYSTIMESTAMP);
-  COMMIT;  -- ✅ trace garantie
+  INSERT INTO STG_RAW.LOG (log_id, table_name, log_ts)
+  VALUES (v_log_id, 'STG_RAW.ATMO_RES', SYSTIMESTAMP);
+  COMMIT;  
 
   BEGIN
     -- 3. Suppression transactionnelle
-    DELETE FROM STG_RAW_ATMO_RES;
+    DELETE FROM STG_RAW.ATMO_RES;
 
     -- 4. Insert en bloc depuis JSON
-    INSERT INTO STG_RAW_ATMO_RES (
+    INSERT INTO STG_RAW.ATMO_RES (
       LOG_ID, NAME, ICON_URL
     )
+	
     SELECT v_log_id,
            jt.NAME,
            jt.ICON_URL
     FROM JSON_TABLE(:body, '$[*]'
       COLUMNS (
         name        VARCHAR2(100) PATH '$.name',
-        icon_url    VARCHAR2(50)  PATH '$.icon_url'
+        icon_url    VARCHAR2(500)  PATH '$.icon_url'
 		)
     ) jt;
+	COMMIT;
 
     v_count := SQL%ROWCOUNT;
 
-    UPDATE STG_RAW_LOG
+    UPDATE STG_RAW.LOG
     SET row_count = v_count
     WHERE log_id = v_log_id;
+	
+	COMMIT;
 
     :status_code := 201;
     owa_util.mime_header('application/json', FALSE);
-    owa_util.http_header_close; -- ✅ toujours fermer
+    owa_util.http_header_close; 
     htp.print('{"log_id": ' || v_log_id ||
               ', "status": "SUCCES"' ||
               ', "row_count": ' || v_count || '}');
@@ -47,14 +51,14 @@ BEGIN
       v_errmsg := SQLERRM;
       ROLLBACK;
 
-      UPDATE STG_RAW_LOG
+      UPDATE STG_RAW.LOG
       SET error_message = v_errmsg
       WHERE log_id = v_log_id;
       COMMIT;
 
       :status_code := 400;
       owa_util.mime_header('application/json', FALSE);
-      owa_util.http_header_close; -- ✅ toujours fermer
+      owa_util.http_header_close; 
       htp.print('{"log_id": ' || v_log_id ||
                 ', "status": "ECHEC"' ||
                 ', "error": "' || REPLACE(v_errmsg,'"','''') || '"}');
