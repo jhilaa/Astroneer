@@ -11,9 +11,11 @@ from datetime import datetime
 
 def NAT_RES_data_to_json(soup: BeautifulSoup):
     print("     ✅ Lancement du script process_NAT_RES_data.py")
-
-    NAT_RES = []
-    NAT_RES_RATE = []
+    ENDPOINT_NAT_RES = utils.get_env("ENDPOINT_NAT_RES")
+    ENDPOINT_NAT_RES_RATE = utils.get_env("ENDPOINT_NAT_RES_RATE")
+  
+    NAT_RES_DATA = []
+    NAT_RES_RATE_DATA = []
     start = soup.select_one("#Ressources_Naturelles")
     if start:
         table = start.find_next("table")
@@ -28,28 +30,47 @@ def NAT_RES_data_to_json(soup: BeautifulSoup):
                 icon_url = icon.get("data-src") if icon else None
 
                 # Données référentielles
-                NAT_RES.append({
+                NAT_RES_DATA.append({
                     "name": resource_name,
                     "icon_url": icon_url})
                 # Données par planète
                 for i, cell in enumerate(cells[1:]):
                     concentration = cell.get_text(strip=True)
-                    NAT_RES_RATE.append ({
+                    NAT_RES_RATE_DATA.append ({
                         "resource_name" : resource_name,
                         "planete": planet_names[i],
                         "taux": concentration})
                
 
-        script_dir = os.path.dirname(os.path.abspath(__file__)) 
-        # Données référentielles
-        utils.create_json_file (dir_name=script_dir, dataset_name="NAT_RES", json_data=NAT_RES)         
-        # Données par planète
-        utils.create_json_file (dir_name=script_dir, dataset_name="NAT_RES_RATE", json_data=NAT_RES_RATE)   
-         # On envoie le JSON au service REST
-        headers = {"Content-Type": "application/json"}
-        #response = requests.post(ENDPOINT_NAT_RES, json=NAT_RES, headers=headers)
+            script_dir = os.path.dirname(os.path.abspath(__file__)) 
+            # ========================
+            # DONNÉES RÉFÉRENTIELLES 
+            # ========================
+         
+            # Création du fichier json (pour avoir une trace)
+            utils.create_json_file (dir_name=script_dir, dataset_name="NAT_RES", json_data=NAT_RES_DATA)  
+            # On envoie le JSON au service REST
+            try:
+                url = ENDPOINT_NAT_RES
+                headers = {
+                  'Content-Type': 'application/json'
+                }
+                response = requests.request("POST", url, headers=headers, data=json.dumps(NAT_RES_DATA))
 
-        # On checke la réponse
-        #print("Status:", response.status_code)
-        #print("Response:", response.text)
-    
+            except Exception as e:
+                print("Erreur :", e)
+            
+            # ========================
+            # DONNÉES PAR PLANÈTE 
+            # ========================
+            # Création du fichier json (pour avoir une trace)
+            utils.create_json_file (dir_name=script_dir, dataset_name="NAT_RES_RATE", json_data=NAT_RES_RATE_DATA)  
+            # On envoie le JSON au service REST
+            try:
+                url = ENDPOINT_NAT_RES_RATE
+                headers = {
+                  'Content-Type': 'application/json'
+                }
+                response = requests.request("POST", url, headers=headers, data=json.dumps(NAT_RES_RATE_DATA))
+            except Exception as e:
+                print("Erreur :", e)

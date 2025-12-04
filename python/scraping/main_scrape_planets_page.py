@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from scraping.planets import process_PLANET_data
+from scraping.planets import process_PLANETS_data
 from scraping import utils
 
 
@@ -13,7 +13,7 @@ def main():
     soup = utils.get_soup(URL)
 
     if soup:
-        process_PLANET_data.planets_data_to_json(soup)
+        process_PLANETS_data.PLANETS_data_to_json(soup)
         
     print("✅ Fin du script principal main_scrape_planets_page.py")
 
