@@ -8,6 +8,7 @@ from datetime import datetime
 
 def COMP_RES_data_to_json(soup: BeautifulSoup):
     print("     ✅ Lancement du script process_COMP_RES_data.py")
+    ENDPOINT_COMP_RES = utils.get_env("ENDPOINT_COMP_RES")
     
     COMP_RES = []
     start = soup.select_one("#Ressources_Composées")
@@ -36,10 +37,14 @@ def COMP_RES_data_to_json(soup: BeautifulSoup):
             utils.create_json_file (dir_name=script_dir, dataset_name="COMP_RES", json_data=COMP_RES)   
             
             # On envoie le JSON au service REST
-            headers = {"Content-Type": "application/json"}
-            #response = requests.post(ENDPOINT_COMP_RES, json=COMP_RES, headers=headers)
+            try:
+                url = ENDPOINT_COMP_RES
+                headers = {
+                  'Content-Type': 'application/json'
+                }
+                response = requests.request("POST", url, headers=headers, data=json.dumps(COMP_RES))
 
-            # On checke la réponse
-            #print("Status:", response.status_code)
-            #print("Response:", response.text)
+            except Exception as e:
+                print("Erreur :", e)
+            
     
