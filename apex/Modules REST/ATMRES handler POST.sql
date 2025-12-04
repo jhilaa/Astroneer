@@ -26,16 +26,16 @@ BEGIN
       COLUMNS (
         name        VARCHAR2(100) PATH '$.name',
         icon_url    VARCHAR2(500)  PATH '$.icon_url'
-		)
+      )
     ) jt;
-	v_count := SQL%ROWCOUNT;
-	COMMIT;
+    v_count := SQL%ROWCOUNT;
+    COMMIT;
 
     UPDATE STG_RAW.LOG
     SET row_count = v_count
     WHERE log_id = v_log_id;
-	
-	COMMIT;
+    
+    COMMIT;
 
     :status_code := 201;
     owa_util.mime_header('application/json', FALSE);

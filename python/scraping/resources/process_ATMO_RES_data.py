@@ -12,7 +12,7 @@ from scraping.utils import print_log
 def ATMO_RES_data_to_json(soup: BeautifulSoup):
     print("     ✅ Lancement du script principal process_ATMO_RES.py")
     ENDPOINT_ATMO_RES = utils.get_env("ENDPOINT_ATMO_RES")
-    #ENDPOINT_ATMO_RES_RATE = utils.get_env("ENDPOINT_ATMO_RES_RATE")
+    ENDPOINT_ATMO_RES_RATE = utils.get_env("ENDPOINT_ATMO_RES_RATE")
     
     ATMO_RES_DATA = []
     ATMO_RES_RATE_DATA = []
@@ -51,7 +51,11 @@ def ATMO_RES_data_to_json(soup: BeautifulSoup):
             # On envoie le JSON au service REST
             try:
                 url = ENDPOINT_ATMO_RES
+                headers = {
+                  'Content-Type': 'application/json'
+                }
                 response = requests.request("POST", url, headers=headers, data=json.dumps(ATMO_RES_DATA))
+
             except Exception as e:
                 print("Erreur :", e)
             
@@ -63,6 +67,9 @@ def ATMO_RES_data_to_json(soup: BeautifulSoup):
             # On envoie le JSON au service REST
             try:
                 url = ENDPOINT_ATMO_RES_RATE
+                headers = {
+                  'Content-Type': 'application/json'
+                }
                 response = requests.request("POST", url, headers=headers, data=json.dumps(ATMO_RES_RATE_DATA))
             except Exception as e:
                 print("Erreur :", e)

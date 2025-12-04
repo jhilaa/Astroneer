@@ -26,18 +26,18 @@ BEGIN
     FROM JSON_TABLE(:body, '$[*]'
       COLUMNS (
         resource_name   VARCHAR2(100) PATH '$.resource_name',
-        planete    		VARCHAR2(500)  PATH '$.planete',
-        taux    		VARCHAR2(500)  PATH '$.taux'
-		)
+        planete         VARCHAR2(500)  PATH '$.planete',
+        taux            VARCHAR2(500)  PATH '$.taux'
+      )
     ) jt;
-	v_count := SQL%ROWCOUNT;
-	COMMIT;
+    v_count := SQL%ROWCOUNT;
+    COMMIT;
 
     UPDATE STG_RAW.LOG
     SET row_count = v_count
     WHERE log_id = v_log_id;
-	
-	COMMIT;
+    
+    COMMIT;
 
     :status_code := 201;
     owa_util.mime_header('application/json', FALSE);
