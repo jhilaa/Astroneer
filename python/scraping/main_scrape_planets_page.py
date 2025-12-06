@@ -4,7 +4,7 @@ from scraping import utils
 
 
 # URL
-URL = "https://astroneer.fandom.com/fr/wiki/Plan%C3%A8tes"
+URL = "https://astroneer.fandom.com/wiki/Planets"
 
 # --- Orchestration ---
 def main():

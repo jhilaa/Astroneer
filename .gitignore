@@ -105,8 +105,8 @@ __marimo__/
 *.pbit
 
 # --- Docs ---
-# Ignore temporary documentation builds
 docs/temp/
 **/TU/
+LOG.docx
 
 

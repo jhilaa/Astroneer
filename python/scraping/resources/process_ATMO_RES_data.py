@@ -16,7 +16,7 @@ def ATMO_RES_data_to_json(soup: BeautifulSoup):
     
     ATMO_RES_DATA = []
     ATMO_RES_RATE_DATA = []
-    start = soup.select_one("#Ressources_atmosphériques")
+    start = soup.select_one("#Atmospheric_Resources")
     if start:
         table = start.find_next("table")
         if table:

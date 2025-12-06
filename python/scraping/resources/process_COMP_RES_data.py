@@ -11,7 +11,7 @@ def COMP_RES_data_to_json(soup: BeautifulSoup):
     ENDPOINT_COMP_RES = utils.get_env("ENDPOINT_COMP_RES")
     
     COMP_RES = []
-    start = soup.select_one("#Ressources_Composées")
+    start = soup.select_one("#Composite_Resources")
     if start:
         table = start.find_next("table")
         if table:

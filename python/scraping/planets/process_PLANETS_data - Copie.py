@@ -12,7 +12,7 @@ def PLANETS_data_to_json(soup: BeautifulSoup):
     ENDPOINT_PLANET = utils.get_env("ENDPOINT_PLANET")
     
     # On extrait les données qui nous intéresse dans l'extraction BeautifulSoup
-    start = soup.find("span", {"id": "Planets"})
+    start = soup.find("span", {"id": "Liste_des_planètes"})
     if start:
         h2 = start.find_parent("h2")
         if h2 :
@@ -26,7 +26,7 @@ def PLANETS_data_to_json(soup: BeautifulSoup):
                     for index, td in enumerate (tr.select("th, td")):
                         planet_data.append(td.get_text(separator=";", strip=True))
                         # cas particulier du core symbol
-                        if (index == 9) :
+                        if (index == 8) :
                             icon_data = td.select_one("a:has(img)")
                             img = icon_data.select_one("img")
                             core_symbol = img.get("data-src")
@@ -41,9 +41,8 @@ def PLANETS_data_to_json(soup: BeautifulSoup):
                         "difficulty": planet_data[5] if len(planet_data) > 5 else None,
                         "solar_power": planet_data[6] if len(planet_data) > 6 else None,
                         "wind_power": planet_data[7] if len(planet_data) > 7 else None,
-                        "gateway_chamber_power_required": planet_data[8] if len(planet_data) > 8 else None,
                         "core_symbol_url": core_symbol,
-                        "core_material": planet_data[10] if len(planet_data) > 10 else None
+                        "core_material": planet_data[9] if len(planet_data) > 9 else None
                     }
                     planets.append(planet)
 

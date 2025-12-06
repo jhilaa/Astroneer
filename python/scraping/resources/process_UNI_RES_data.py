@@ -13,7 +13,7 @@ def UNI_RES_data_to_json(soup: BeautifulSoup):
     print("     ✅ Lancement du script process_UNI_RES_data.py")
 
     UNI_RES = []
-    start = soup.select_one("#Ressources_Naturelles")
+    start = soup.select_one("#Other_Resources")
     if start:
         table = start.find_next("dl")
         if table:

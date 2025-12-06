@@ -8,7 +8,7 @@ from scraping.resources import process_UNI_RES_data
 
 
 # URL
-URL = "https://astroneer.fandom.com/fr/wiki/Ressources"
+URL = "https://astroneer.fandom.com/wiki/Resources"
 
 
 # --- Orchestration ---
