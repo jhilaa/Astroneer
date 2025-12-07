@@ -11,8 +11,8 @@ from datetime import datetime
 
 def NAT_RES_data_to_json(soup: BeautifulSoup):
     print("     ✅ Lancement du script process_NAT_RES_data.py")
-    #ENDPOINT_NAT_RES = utils.get_env("ENDPOINT_NAT_RES")
-    #ENDPOINT_NAT_RES_RATE = utils.get_env("ENDPOINT_NAT_RES_RATE")
+    ENDPOINT_NAT_RES = utils.get_env("ENDPOINT_NAT_RES")
+    ENDPOINT_NAT_RES_RATE = utils.get_env("ENDPOINT_NAT_RES_RATE")
   
     NAT_RES_DATA = []
     NAT_RES_RATE_DATA = []
@@ -71,6 +71,6 @@ def NAT_RES_data_to_json(soup: BeautifulSoup):
                 headers = {
                   'Content-Type': 'application/json'
                 }
-                #response = requests.request("POST", url, headers=headers, data=json.dumps(NAT_RES_RATE_DATA))
+                response = requests.request("POST", url, headers=headers, data=json.dumps(NAT_RES_RATE_DATA))
             except Exception as e:
                 print("Erreur :", e)
