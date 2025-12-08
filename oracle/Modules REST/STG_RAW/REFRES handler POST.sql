@@ -8,15 +8,15 @@ BEGIN
 
   -- 2. Log "EN COURS" et commit immédiat
   INSERT INTO STG_RAW.LOG (log_id, table_name, log_ts)
-  VALUES (v_log_id, 'STG_RAW.NAT_RES', SYSTIMESTAMP);
+  VALUES (v_log_id, 'STG_RAW.REF_RES', SYSTIMESTAMP);
   COMMIT;  
 
   BEGIN
     -- 3. Suppression transactionnelle
-    DELETE FROM STG_RAW.NAT_RES;
+    DELETE FROM STG_RAW.REF_RES;
 
     -- 4. Insert en bloc depuis JSON
-    INSERT INTO STG_RAW.NAT_RES (
+    INSERT INTO STG_RAW.REF_RES (
       LOG_ID, NAME, ICON_URL
     )
     SELECT v_log_id,
