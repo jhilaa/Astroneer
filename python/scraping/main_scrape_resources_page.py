@@ -12,7 +12,7 @@ URL = "https://astroneer.fandom.com/wiki/Resources"
 
 # --- Orchestration ---
 def main():
-    print_log("✅ Lancement du script principal main_scrap_resources_page.py", 0)
+    print_log(" [>] Lancement du script principal main_scrap_resources_page.py", 0)
     # Parsing avec BeautifulSoup
     soup = utils.get_soup(URL)
     if soup:
@@ -22,7 +22,7 @@ def main():
         process_REF_RES_data.REF_RES_data_to_json(soup)
 
         
-    print_log("✅ Fin du script principal main_scrap_resources_page.py", 0)
+    print_log("[>] Fin du script principal main_scrap_resources_page.py", 0)
 
 if __name__ == "__main__":
     main()

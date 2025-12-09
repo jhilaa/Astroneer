@@ -7,7 +7,7 @@ from datetime import datetime
 
 
 def COMP_RES_data_to_json(soup: BeautifulSoup):
-    print("     ✅ Lancement du script process_COMP_RES_data.py")
+    print("     [>] Lancement du script process_COMP_RES_data.py")
     ENDPOINT_COMP_RES = utils.get_env("ENDPOINT_COMP_RES")
     
     COMP_RES = []

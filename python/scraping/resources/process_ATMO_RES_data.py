@@ -10,7 +10,7 @@ from scraping.utils import print_log
 
 
 def ATMO_RES_data_to_json(soup: BeautifulSoup):
-    print("     ✅ Lancement du script principal process_ATMO_RES.py")
+    print("     [>] Lancement du script principal process_ATMO_RES.py")
     ENDPOINT_ATMO_RES = utils.get_env("ENDPOINT_ATMO_RES")
     ENDPOINT_ATMO_RES_RATE = utils.get_env("ENDPOINT_ATMO_RES_RATE")
     

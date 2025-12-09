@@ -108,6 +108,6 @@ __marimo__/
 docs/temp/
 **/TU/
 LOG.docx
-dev-specific/
+**/.env
 
 

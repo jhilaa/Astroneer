@@ -8,7 +8,7 @@ from datetime import datetime
 from scraping import utils
 
 def PLANETS_data_to_json(soup: BeautifulSoup):
-    print("     ✅ Lancement du script principal process_PLANETS_DATA.py")
+    print("    [OK]  Lancement du script principal process_PLANETS_DATA.py")
     ENDPOINT_PLANET = utils.get_env("ENDPOINT_PLANET")
     
     # On extrait les données qui nous intéresse dans l'extraction BeautifulSoup

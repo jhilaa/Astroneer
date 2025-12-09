@@ -10,7 +10,7 @@ from datetime import datetime
 
 
 def NAT_RES_data_to_json(soup: BeautifulSoup):
-    print("     ✅ Lancement du script process_NAT_RES_data.py")
+    print("     [>] Lancement du script process_NAT_RES_data.py")
     ENDPOINT_NAT_RES = utils.get_env("ENDPOINT_NAT_RES")
     ENDPOINT_NAT_RES_RATE = utils.get_env("ENDPOINT_NAT_RES_RATE")
   

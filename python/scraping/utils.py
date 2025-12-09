@@ -63,7 +63,7 @@ def create_json_file (dir_name, dataset_name, json_data):
     # Écriture du fichier JSON en UTF-8
     with open(file_name, "w", encoding="utf-8") as f:
         json.dump(json_data, f, ensure_ascii=False, indent=2)
-    print(f"     ✅ Fichier généré : {file_name}")
+    print(f"     [OK] Fichier généré : {file_name}")
     # On ne garde que les 2 derniers fichiers
     cleanup_json (subfolder, dataset_name, keep=1)
    
@@ -79,7 +79,7 @@ def cleanup_json(folder: str, begin_with: str, keep: int = 5):
     # Supprime les plus anciens au-delà du quota
     for old_file in files[keep:]:
         old_file.unlink()
-        print(f"🗑️ Supprimé : {old_file.name}")
+        print(f"[-] Supprimé : {old_file.name}")
         
 import requests
 import json
@@ -102,9 +102,9 @@ def post_json(url: str, payload: dict | list, headers: dict | None = None, timeo
     try:
         response = requests.post(url, json=payload, headers=headers, timeout=timeout)
         response.raise_for_status()  # lève une exception si code != 200
-        print(f"✅ POST réussi : {response.status_code}")
+        print(f"[OK] POST réussi : {response.status_code}")
     except requests.exceptions.RequestException as e:
-        print(f"❌ Erreur lors du POST vers APEX : {e}")
+        print(f"[X] Erreur lors du POST vers APEX : {e}")
         raise
     return response
 

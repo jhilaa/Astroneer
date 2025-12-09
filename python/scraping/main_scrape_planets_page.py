@@ -8,14 +8,14 @@ URL = "https://astroneer.fandom.com/wiki/Planets"
 
 # --- Orchestration ---
 def main():
-    print("✅ Lancement du script principal main_scrape_planets_page.py")
+    print("[OK] Lancement du script principal main_scrape_planets_page.py")
     # Parsing avec BeautifulSoup
     soup = utils.get_soup(URL)
 
     if soup:
         process_PLANETS_data.PLANETS_data_to_json(soup)
         
-    print("✅ Fin du script principal main_scrape_planets_page.py")
+    print("[OK] Fin du script principal main_scrape_planets_page.py")
 
 if __name__ == "__main__":
     main()

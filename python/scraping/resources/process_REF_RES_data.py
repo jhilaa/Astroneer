@@ -7,7 +7,7 @@ from datetime import datetime
 
 
 def REF_RES_data_to_json(soup: BeautifulSoup):
-    print("     ✅ Lancement du script process_REF_RES_data.py")
+    print("     [>] Lancement du script process_REF_RES_data.py")
     
     ENDPOINT_REF_RES = utils.get_env("ENDPOINT_REF_RES")
     REF_RES = []
