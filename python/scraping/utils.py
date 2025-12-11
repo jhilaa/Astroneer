@@ -6,6 +6,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from datetime import datetime
 
+
 # Ecrit un log avec le niveau d'indentation demandé
 def print_log (log: str, level: int = 0):
     print ("   " * level)
@@ -52,8 +53,7 @@ def cleanup_json(folder: str, begin_with: str, keep: int = 5):
         old_file.unlink()
         print(f"[-] Supprimé : {old_file.name}")
         
-import requests
-import json
+
 
 def post_json(url: str, payload: dict | list, headers: dict | None = None, timeout: int = 30) -> requests.Response:
     """
