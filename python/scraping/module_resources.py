@@ -8,50 +8,44 @@ from urllib.parse import urljoin
 #
 from scraping import utils
 
-# codes Modules
-ATMRES_MODULE = "atmres"
-ATMRESRATE_MODULE = "atmresrate"
-COMPRES_MODULE = "compres"
-NATRES_MODULE = "natres"
-NATRESRATE_MODULE = "natresrate"
-REFRES_MODULE = "refres"
+# codes branchs
+ATMRES_BRANCH = "atmres"
+ATMRESRATE_BRANCH = "atmresrate"
+COMPRES_BRANCH = "compres"
+NATRES_BRANCH = "natres"
+NATRESRATE_BRANCH = "natresrate"
+REFRES_BRANCH = "refres"
 
 def main (): 
+    utils.print_log("[>] Données Resources",0)
     # URLs
-    url_resources = urljoin(utils.get_env("host"),utils.get_env("resources_path"))    
+    resources_data_src = urljoin(utils.get_env("domain"),utils.get_env("resources_path")) 
     
-    # point d'api par module
+    # point d'api par branch
     resource_api = {
-        ATMRES_MODULE: "api_module_atmo_res",
-        ATMRESRATE_MODULE: "api_module_atmo_res_rate",
-        COMPRES_MODULE: "api_module_comp_res",
-        NATRES_MODULE: "api_module_nat_res",
-        NATRESRATE_MODULE: "api_module_nat_res_rate",
-        REFRES_MODULE: "api_module_ref_res",
+        ATMRES_BRANCH: "atmores",
+        ATMRESRATE_BRANCH: "atmoresrate",
+        COMPRES_BRANCH: "compres",
+        NATRES_BRANCH: "natres",
+        NATRESRATE_BRANCH: "natresrate",
+        REFRES_BRANCH: "refres",
      }
-
-    api_endpoint = utils.get_env("api_endpoint")
-    print("api_endpoint")
-    print(api_endpoint)
-    
-    # récupéartion de tous les types de ressources + génération json + envoi REST 
-    resources_data = get_resources_data (url_resources)
+    # récupération de tous les types de ressources + génération json + envoi REST 
+    resources_data = get_resources_data (resources_data_src)
     script_dir = os.path.dirname(os.path.abspath(__file__)) 
-    if resources_data:
-        for module, data in resources_data.items():
-            print ("------------")
-            print (module)
-            utils.create_json_file (dir_name=script_dir, dataset_name=module, json_data=data)
-            print (urljoin(utils.get_env("api_endpoint"), module) )
+    if resources_data: 
+        for branch, data in resources_data.items():
+            utils.create_json_file (dir_name=script_dir, dataset_name=branch, json_data=data)
             #
-            module_endpoint = urljoin(api_endpoint,module)
-            print ("module_endpoint")
-            print (module_endpoint)
-            utils.post_json(module_endpoint, data)
+            branch_endpoint = urljoin(utils.get_env("api_endpoint"),branch)
+            print("branch_endpoint ----------")
+            print(branch_endpoint)
+            utils.print_log("[>] Envoi des données",1)
+            utils.post_json(branch_endpoint, data)
     return "ok"       
     
-def get_resources_data (url_resources):
-    soup = utils.get_soup(url_resources)
+def get_resources_data (resources_data_src):
+    soup = utils.get_soup(resources_data_src)
     if soup: 
         return (get_atmres(soup)  # atmres et atmresrate
               | get_compres(soup)
@@ -64,7 +58,6 @@ def get_atmres(soup):
     atmo_res_rate_data = []
     start = soup.select_one("#Atmospheric_Resources")
     if start:
-        print(" 1")
         table = start.find_next("table")
         if table:
             print(" 1")
@@ -88,8 +81,8 @@ def get_atmres(soup):
                         "resource_name" : resource_name,
                         "planete": planet_names[i],
                         "taux": rate})
-        return {ATMRES_MODULE:atmo_res_data,
-                 ATMRESRATE_MODULE:atmo_res_rate_data}
+        return {ATMRES_BRANCH:atmo_res_data,
+                 ATMRESRATE_BRANCH:atmo_res_rate_data}
     print(" xxx")
     return None
 
@@ -116,7 +109,7 @@ def get_compres(soup):
                    "resource_2_name" : resource_2_name,
                    "gaz_name" : gaz_name
                })          
-       return {COMPRES_MODULE :comp_res}          
+       return {COMPRES_BRANCH :comp_res}          
     return None
     
 def get_natres (soup):
@@ -149,8 +142,8 @@ def get_natres (soup):
                         "planete": planet_names[i],
                         "taux": concentration})
            
-        return {NATRES_MODULE:nat_res_data,
-                 NATRESRATE_MODULE:nat_res_rate_data}
+        return {NATRES_BRANCH:nat_res_data,
+                 NATRESRATE_BRANCH:nat_res_rate_data}
     return None
     
 def get_refres(soup):
@@ -172,7 +165,7 @@ def get_refres(soup):
                     "icon_url" : icon_url,
                     "raw_resource_name" : raw_resource_name
                 })           
-        return {REFRES_MODULE:ref_res}          
+        return {REFRES_BRANCH:ref_res}          
     return None
     
     

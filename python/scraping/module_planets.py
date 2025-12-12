@@ -8,29 +8,27 @@ from urllib.parse import urljoin
 #
 from scraping import utils
 
-MODULE = "planet"
 
 def main ():
-    utils.print_log("[>] Données Planets",0)
-    
+    utils.print_log("[>] Données Planets",0) 
     # URLs
-    url_planet = utils.get_env("host") + utils.get_env("planet_path") 
-    planet_endpoint = urljoin(utils.get_env("api_endpoint"), MODULE) 
-   
+    planet_data_src = urljoin(utils.get_env("domain"),utils.get_env("planet_path"))
+    planet_endpoint = urljoin(utils.get_env("api_endpoint"), "planet")
+    
     # on récupère les données planet sous forme de json
-    planets_data = get_planets_data(url_planet)
+    planets_data = get_planets_data(planet_data_src)
     if planets_data:
         # export json
         script_dir = os.path.dirname(os.path.abspath(__file__)) 
         utils.create_json_file (dir_name=script_dir, dataset_name="planet", json_data=planets_data)
         # envoie à apex
         if planet_endpoint:
-            utils.print_log("[>] Données Planets",3)
+            utils.print_log("[>] Envoi des données",1)
             utils.post_json(planet_endpoint, planets_data)
     return "ok"
     
-def get_planets_data(url_planet):
-    soup = utils.get_soup(url_planet)
+def get_planets_data(planet_data_src):
+    soup = utils.get_soup(planet_data_src)
     if soup:
         # On extrait les données qui nous intéresse dans l'extraction BeautifulSoup
         start = soup.find("span", {"id": "Planets"})
