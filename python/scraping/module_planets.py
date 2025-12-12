@@ -4,15 +4,18 @@ import json
 import os
 from dotenv import load_dotenv
 from datetime import datetime
+from urllib.parse import urljoin
 #
 from scraping import utils
 
+MODULE = "planet"
 
 def main ():
     utils.print_log("[>] Données Planets",0)
+    
     # URLs
     url_planet = utils.get_env("host") + utils.get_env("planet_path") 
-    endpoint_planet = utils.get_env("api_endpoint") + utils.get_env("api_module_planet") 
+    planet_endpoint = urljoin(utils.get_env("api_endpoint"), MODULE) 
    
     # on récupère les données planet sous forme de json
     planets_data = get_planets_data(url_planet)
@@ -21,9 +24,9 @@ def main ():
         script_dir = os.path.dirname(os.path.abspath(__file__)) 
         utils.create_json_file (dir_name=script_dir, dataset_name="planet", json_data=planets_data)
         # envoie à apex
-        if endpoint_planet:
+        if planet_endpoint:
             utils.print_log("[>] Données Planets",3)
-            utils.post_json(endpoint_planet, planets_data)
+            utils.post_json(planet_endpoint, planets_data)
     return "ok"
     
 def get_planets_data(url_planet):

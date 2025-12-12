@@ -9,7 +9,7 @@ from datetime import datetime
 
 # Ecrit un log avec le niveau d'indentation demandé
 def print_log (log: str, level: int = 0):
-    print ("   " * level)
+    print ("   " * level + log)
     
 # Renvoie la valeur de la variable d'environnement demandée, à partir du .env situé au même niveau que ce script
 def get_env (variable_name: str):

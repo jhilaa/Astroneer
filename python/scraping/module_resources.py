@@ -1,29 +1,182 @@
+from bs4 import BeautifulSoup
+import requests
+import json
+import os
+from dotenv import load_dotenv
+from datetime import datetime
+from urllib.parse import urljoin
+#
 from scraping import utils
-from scraping.utils import print_log
-from scraping.resources import process_ATMO_RES_data
-from scraping.resources import process_COMP_RES_data
-from scraping.resources import process_NAT_RES_data
-from scraping.resources import process_REF_RES_data
 
+# codes Modules
+ATMRES_MODULE = "atmres"
+ATMRESRATE_MODULE = "atmresrate"
+COMPRES_MODULE = "compres"
+NATRES_MODULE = "natres"
+NATRESRATE_MODULE = "natresrate"
+REFRES_MODULE = "refres"
 
-# URL
-URL = "https://astroneer.fandom.com/wiki/Resources"
+def main (): 
+    # URLs
+    url_resources = urljoin(utils.get_env("host"),utils.get_env("resources_path"))    
+    
+    # point d'api par module
+    resource_api = {
+        ATMRES_MODULE: "api_module_atmo_res",
+        ATMRESRATE_MODULE: "api_module_atmo_res_rate",
+        COMPRES_MODULE: "api_module_comp_res",
+        NATRES_MODULE: "api_module_nat_res",
+        NATRESRATE_MODULE: "api_module_nat_res_rate",
+        REFRES_MODULE: "api_module_ref_res",
+     }
 
+    api_endpoint = utils.get_env("api_endpoint")
+    print("api_endpoint")
+    print(api_endpoint)
+    
+    # récupéartion de tous les types de ressources + génération json + envoi REST 
+    resources_data = get_resources_data (url_resources)
+    script_dir = os.path.dirname(os.path.abspath(__file__)) 
+    if resources_data:
+        for module, data in resources_data.items():
+            print ("------------")
+            print (module)
+            utils.create_json_file (dir_name=script_dir, dataset_name=module, json_data=data)
+            print (urljoin(utils.get_env("api_endpoint"), module) )
+            #
+            module_endpoint = urljoin(api_endpoint,module)
+            print ("module_endpoint")
+            print (module_endpoint)
+            utils.post_json(module_endpoint, data)
+    return "ok"       
+    
+def get_resources_data (url_resources):
+    soup = utils.get_soup(url_resources)
+    if soup: 
+        return (get_atmres(soup)  # atmres et atmresrate
+              | get_compres(soup)
+              | get_natres(soup)  # natres et natresrate
+              | get_refres(soup))
+    return None
 
-# --- Orchestration ---
-def main():
-    print_log(" [>] Lancement du script principal main_scrap_resources_page.py", 0)
-    # Parsing avec BeautifulSoup
-    soup = utils.get_soup(URL)
-    if soup:
-        process_ATMO_RES_data.ATMO_RES_data_to_json(soup)
-        process_COMP_RES_data.COMP_RES_data_to_json(soup)
-        process_NAT_RES_data.NAT_RES_data_to_json(soup)
-        process_REF_RES_data.REF_RES_data_to_json(soup)
+def get_atmres(soup):
+    atmo_res_data = []
+    atmo_res_rate_data = []
+    start = soup.select_one("#Atmospheric_Resources")
+    if start:
+        print(" 1")
+        table = start.find_next("table")
+        if table:
+            print(" 1")
+            rows = table.find_all("tr")  
+            # On extrait les noms de planètes depuis l'entête
+            planet_names = [th.get_text(strip=True) for th in rows[0].find_all("th")[1:]]
+            for row in rows[1:]:
+                cells = row.find_all("td")
+                resource_name = cells[0].get_text(strip=True)
+                icon = cells[0].find("img")
+                icon_url = icon.get("data-src") if icon else None
+                
+                # Données référentielles
+                atmo_res_data.append({
+                    "name": resource_name,
+                    "icon_url": icon_url})
+                # Données par planète
+                for i, cell in enumerate(cells[1:]):
+                    rate = cell.get_text(strip=True)
+                    atmo_res_rate_data.append ({
+                        "resource_name" : resource_name,
+                        "planete": planet_names[i],
+                        "taux": rate})
+        return {ATMRES_MODULE:atmo_res_data,
+                 ATMRESRATE_MODULE:atmo_res_rate_data}
+    print(" xxx")
+    return None
 
-        
-    print_log("[>] Fin du script principal main_scrap_resources_page.py", 0)
+def get_compres(soup):
+    comp_res = []
+    start = soup.select_one("#Composite_Resources")
+    if start:
+       table = start.find_next("table")
+       if table:
+           rows = table.find_all("tr")
+           for row in rows[1:]:
+               cells = row.find_all("td")
+               icon = cells[0].find("img")               
+               resource_name = cells[0].get_text(strip=True)
+               icon_url = icon.get("data-src") if icon else None
+               resource_1_name = cells[1].get_text(strip=True)
+               resource_2_name = cells[2].get_text(strip=True)  
+               gaz_name = cells[3].get_text(strip=True)  
 
-if __name__ == "__main__":
+               comp_res.append ({
+                   "name" : resource_name,
+                   "icon_url" : icon_url,
+                   "resource_1_name" : resource_1_name,
+                   "resource_2_name" : resource_2_name,
+                   "gaz_name" : gaz_name
+               })          
+       return {COMPRES_MODULE :comp_res}          
+    return None
+    
+def get_natres (soup):
+    nat_res_data = []
+    nat_res_rate_data = []
+    start = soup.select_one("#Natural_Resources")
+    if start:
+        table = start.find_next("table")
+        if table:
+            rows = table.find_all("tr") 
+            # On extrait les noms de planètes depuis l'entête
+            planet_names = [th.get_text(strip=True) for th in rows[0].find_all("th")[1:-1]]
+            
+            # On saute la 1ère ligne
+            for row in rows[1:]:
+                cols = row.find_all("td")[:-1]
+                # Données référentielles dans la 1ère colonne
+                resource_name = cols[0].get_text(strip=True)
+                icon = cols[0].find("img")
+                icon_url = icon.get("data-src") if icon else None
+                nat_res_data.append({
+                    "name": resource_name,
+                    "icon_url": icon_url})
+                    
+                # Données par planète
+                for i, col in enumerate(cols[1:]):
+                    concentration = col.get_text(strip=True)
+                    nat_res_rate_data.append ({
+                        "resource_name" : resource_name,
+                        "planete": planet_names[i],
+                        "taux": concentration})
+           
+        return {NATRES_MODULE:nat_res_data,
+                 NATRESRATE_MODULE:nat_res_rate_data}
+    return None
+    
+def get_refres(soup):
+    ref_res = []
+    start = soup.select_one("#Refined_Resources")
+    if start:
+        table = start.find_next("table")
+        if table:
+            rows = table.find_all("tr")
+            for row in rows[1:]:
+                cells = row.find_all("td")
+                icon = cells[0].find("img")
+                resource_name = cells[0].get_text(strip=True)
+                icon_url = icon.get("data-src") if icon else None
+                raw_resource_name = cells[1].get_text(strip=True)  
+
+                ref_res.append ({
+                    "name" : resource_name,
+                    "icon_url" : icon_url,
+                    "raw_resource_name" : raw_resource_name
+                })           
+        return {REFRES_MODULE:ref_res}          
+    return None
+    
+    
+
+if __name__ == "__main__": 
     main()
     
