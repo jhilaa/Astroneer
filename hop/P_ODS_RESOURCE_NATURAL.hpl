@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pipeline>
   <info>
-    <name>P_ODS_RESOURCE_NAT</name>
+    <name>P_ODS_RESOURCE_NATURAL</name>
     <name_sync_with_filename>N</name_sync_with_filename>
     <description/>
     <extended_description/>
@@ -24,11 +24,6 @@
     <hop>
       <from>LOOKUP RESOURCE_ID</from>
       <to>RESOURCE_ID Existing or Not</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>GET SYSTEM TIMESTAMP INSERT</from>
-      <to>INSERT RESOURCE</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -57,11 +52,6 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>SELECT STG_RAW.NAT_RES</from>
-      <to>Sort rows</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>RESOURCE_ID Existing or Not</from>
       <to>GET SYSTEM TIMESTAMP INSERT</to>
       <enabled>Y</enabled>
@@ -72,8 +62,18 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
+      <from>SELECT STG_RAW.NAT_RES</from>
+      <to>Get variables</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
       <from>Get variables</from>
-      <to>SELECT STG_RAW.NAT_RES</to>
+      <to>Sort rows</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>GET SYSTEM TIMESTAMP INSERT</from>
+      <to>INSERT RESOURCE</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -105,8 +105,8 @@
     </fields>
     <attributes/>
     <GUI>
-      <xloc>608</xloc>
-      <yloc>64</yloc>
+      <xloc>240</xloc>
+      <yloc>160</yloc>
     </GUI>
   </transform>
   <transform>
@@ -122,14 +122,14 @@
     </partitioning>
     <fields>
       <field>
-        <name>INSERT_TS</name>
+        <name>v_INSERT_TS</name>
         <type>system date (variable)</type>
       </field>
     </fields>
     <attributes/>
     <GUI>
-      <xloc>944</xloc>
-      <yloc>128</yloc>
+      <xloc>704</xloc>
+      <yloc>192</yloc>
     </GUI>
   </transform>
   <transform>
@@ -145,14 +145,14 @@
     </partitioning>
     <fields>
       <field>
-        <name>UPDATE_TS</name>
+        <name>v_UPDATE_TS</name>
         <type>system date (variable)</type>
       </field>
     </fields>
     <attributes/>
     <GUI>
-      <xloc>960</xloc>
-      <yloc>320</yloc>
+      <xloc>704</xloc>
+      <yloc>368</yloc>
     </GUI>
   </transform>
   <transform>
@@ -172,13 +172,22 @@
         <name>v_LOG_ID</name>
         <precision>-1</precision>
         <trim_type>none</trim_type>
-        <variable>{g_LOG_ID}</variable>
+        <type>Number</type>
+        <variable>${g_LOG_ID}</variable>
+      </field>
+      <field>
+        <length>-1</length>
+        <name>v_RES_TYPE_NATURAL</name>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <type>String</type>
+        <variable>${c_RES_TYPE_NATURAL}</variable>
       </field>
     </fields>
     <attributes/>
     <GUI>
-      <xloc>80</xloc>
-      <yloc>64</yloc>
+      <xloc>416</xloc>
+      <yloc>48</yloc>
     </GUI>
   </transform>
   <transform>
@@ -210,11 +219,11 @@
       </field>
       <field>
         <column_name>RESOURCE_TYPE</column_name>
-        <stream_name>c_RESOURCE_TYPE</stream_name>
+        <stream_name>v_RES_TYPE_NATURAL</stream_name>
       </field>
       <field>
         <column_name>CREATE_TS</column_name>
-        <stream_name>START_TS</stream_name>
+        <stream_name>v_INSERT_TS</stream_name>
       </field>
       <field>
         <column_name>ICON</column_name>
@@ -240,8 +249,8 @@
     <use_batch>Y</use_batch>
     <attributes/>
     <GUI>
-      <xloc>1136</xloc>
-      <yloc>128</yloc>
+      <xloc>912</xloc>
+      <yloc>192</yloc>
     </GUI>
   </transform>
   <transform>
@@ -279,8 +288,8 @@
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>560</xloc>
-      <yloc>208</yloc>
+      <xloc>272</xloc>
+      <yloc>304</yloc>
     </GUI>
   </transform>
   <transform>
@@ -334,8 +343,8 @@
     <send_true_to>GET SYSTEM TIMESTAMP INSERT</send_true_to>
     <attributes/>
     <GUI>
-      <xloc>752</xloc>
-      <yloc>208</yloc>
+      <xloc>480</xloc>
+      <yloc>304</yloc>
     </GUI>
   </transform>
   <transform>
@@ -355,14 +364,13 @@
     <sql>SELECT
   NAME
 , ICON_URL
-, 1 as TECH_KEY
 FROM STG_RAW.NAT_RES
 </sql>
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>240</xloc>
-      <yloc>64</yloc>
+      <xloc>256</xloc>
+      <yloc>48</yloc>
     </GUI>
   </transform>
   <transform>
@@ -393,8 +401,8 @@ FROM STG_RAW.NAT_RES
     <unique_rows>N</unique_rows>
     <attributes/>
     <GUI>
-      <xloc>320</xloc>
-      <yloc>208</yloc>
+      <xloc>64</xloc>
+      <yloc>304</yloc>
     </GUI>
   </transform>
   <transform>
@@ -416,7 +424,7 @@ FROM STG_RAW.NAT_RES
         <case_sensitive>N</case_sensitive>
         <collator_enabled>N</collator_enabled>
         <collator_strength>0</collator_strength>
-        <name>TECH_KEY</name>
+        <name>NAME</name>
         <presorted>N</presorted>
       </field>
     </fields>
@@ -425,8 +433,8 @@ FROM STG_RAW.NAT_RES
     <unique_rows>N</unique_rows>
     <attributes/>
     <GUI>
-      <xloc>384</xloc>
-      <yloc>64</yloc>
+      <xloc>416</xloc>
+      <yloc>160</yloc>
     </GUI>
   </transform>
   <transform>
@@ -450,8 +458,8 @@ FROM STG_RAW.NAT_RES
     <reject_duplicate_row>N</reject_duplicate_row>
     <attributes/>
     <GUI>
-      <xloc>96</xloc>
-      <yloc>208</yloc>
+      <xloc>64</xloc>
+      <yloc>160</yloc>
     </GUI>
   </transform>
   <transform>
@@ -486,7 +494,7 @@ FROM STG_RAW.NAT_RES
       </value>
       <value>
         <name>UPDATE_TS</name>
-        <rename>UPDATE_TS</rename>
+        <rename>v_UPDATE_TS</rename>
       </value>
       <value>
         <name>ICON</name>
@@ -498,15 +506,15 @@ FROM STG_RAW.NAT_RES
       </value>
       <value>
         <name>RESOURCE_TYPE</name>
-        <rename>c_RESOURCE_TYPE</rename>
+        <rename>v_RES_TYPE_NATURAL</rename>
       </value>
     </lookup>
     <skip_lookup>N</skip_lookup>
     <use_batch>N</use_batch>
     <attributes/>
     <GUI>
-      <xloc>1152</xloc>
-      <yloc>320</yloc>
+      <xloc>912</xloc>
+      <yloc>368</yloc>
     </GUI>
   </transform>
   <transform_error_handling>

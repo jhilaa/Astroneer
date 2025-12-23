@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <workflow>
-  <name>WF_ODS_RESOURCES</name>
+  <name>WF_ODS_REFINED_RESOURCES</name>
   <name_sync_with_filename>N</name_sync_with_filename>
   <description/>
   <extended_description/>
@@ -84,7 +84,7 @@
       <set_logfile>N</set_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <parallel>N</parallel>
-      <xloc>592</xloc>
+      <xloc>576</xloc>
       <yloc>128</yloc>
       <attributes_hac/>
     </action>
@@ -115,7 +115,7 @@
       <attributes_hac/>
     </action>
     <action>
-      <name>P_ODS_RESOURCE.hpl</name>
+      <name>P_ODS_RESOURCE_REFINED.hpl</name>
       <description/>
       <type>PIPELINE</type>
       <attributes/>
@@ -125,7 +125,7 @@
       <clear_rows>Y</clear_rows>
       <create_parent_folder>N</create_parent_folder>
       <exec_per_row>N</exec_per_row>
-      <filename>${PROJECT_HOME}/P_ODS_RESOURCE.hpl</filename>
+      <filename>${PROJECT_HOME}/P_ODS_RESOURCE_REFINED.hpl</filename>
       <logext/>
       <logfile/>
       <loglevel>Basic</loglevel>
@@ -164,7 +164,7 @@
       <set_logfile>N</set_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <parallel>N</parallel>
-      <xloc>912</xloc>
+      <xloc>960</xloc>
       <yloc>128</yloc>
       <attributes_hac/>
     </action>
@@ -193,13 +193,13 @@
     </hop>
     <hop>
       <from>P_INIT_LOG.hpl</from>
-      <to>P_ODS_RESOURCE.hpl</to>
+      <to>P_ODS_RESOURCE_REFINED.hpl</to>
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>P_ODS_RESOURCE.hpl</from>
+      <from>P_ODS_RESOURCE_REFINED.hpl</from>
       <to>P_CLOSE_LOG.hpl</to>
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>

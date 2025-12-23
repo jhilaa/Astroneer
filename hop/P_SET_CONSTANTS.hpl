@@ -39,6 +39,10 @@
     </partitioning>
     <fields>
       <field>
+        <currency/>
+        <decimal/>
+        <format/>
+        <group/>
         <length>-1</length>
         <name>c_status_running</name>
         <nullif>RUNNING</nullif>
@@ -47,6 +51,10 @@
         <type>String</type>
       </field>
       <field>
+        <currency/>
+        <decimal/>
+        <format/>
+        <group/>
         <length>-1</length>
         <name>c_status_success</name>
         <nullif>SUCCESS</nullif>
@@ -55,6 +63,10 @@
         <type>String</type>
       </field>
       <field>
+        <currency/>
+        <decimal/>
+        <format/>
+        <group/>
         <length>-1</length>
         <name>c_status_error</name>
         <nullif>ERROR</nullif>
@@ -63,9 +75,25 @@
         <type>String</type>
       </field>
       <field>
+        <currency/>
+        <decimal/>
+        <format/>
+        <group/>
         <length>-1</length>
         <name>c_resource_type_nat</name>
         <nullif>NATURAL</nullif>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+        <type>String</type>
+      </field>
+      <field>
+        <currency/>
+        <decimal/>
+        <format/>
+        <group/>
+        <length>-1</length>
+        <name>c_resource_type_ref</name>
+        <nullif>REFINED</nullif>
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
         <type>String</type>
@@ -116,6 +144,12 @@
         <default_value>NATURAL</default_value>
         <field_name>c_resource_type_nat</field_name>
         <variable_name>c_RES_TYPE_NATURAL</variable_name>
+        <variable_type>PARENT_WORKFLOW</variable_type>
+      </field>
+      <field>
+        <default_value>REFINED</default_value>
+        <field_name>c_resource_type_ref</field_name>
+        <variable_name>c_RES_TYPE_REFINED</variable_name>
         <variable_type>PARENT_WORKFLOW</variable_type>
       </field>
     </fields>
