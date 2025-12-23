@@ -12,7 +12,7 @@ from scraping import utils
 CATEGORY_SUFFIXE = [
     #":Small",
     #":Medium",
-    #":Large",
+    ":Large",
     ":Extra_Large"
 ]
 
@@ -54,7 +54,7 @@ def get_items_list(items_list_url):
                     link = row.find("a")
                     item = {
                         "title": link.get("title") if link else None,
-                        "name": row.get_text(strip=True),
+                        "name": row.get_text(";", strip=True),
                         "url": link.get("href") if link  else None,
                     }
                     items_list.append(item)
@@ -90,7 +90,7 @@ def get_item_data (item_url):
                 if headers :
                     title_zone = headers[0].select_one("span[title]") if len(headers) > 0  else None
                     title = title_zone.get("title") if title_zone is not None else None
-                    name = headers[0].get_text(strip=True) if len(headers) > 0 else None
+                    name = headers[0].get_text(";", strip=True) if len(headers) > 0 else None
                     icon = headers[0].find("img") if len(headers) > 0 else None
                     if icon:
                         if icon.get("data-src") is not None:
@@ -111,7 +111,7 @@ def get_item_data (item_url):
                             img_src_url = None
                   
                 row_data = data = {
-                    tr.find("th").get_text(strip=True): tr.find("td").get_text(strip=True)
+                    tr.find("th").get_text(";", strip=True): tr.find("td").get_text(";", strip=True)
                     for tr in soup.find_all("tr")
                     if tr.find("th") and tr.find("td")
                 }

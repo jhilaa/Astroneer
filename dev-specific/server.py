@@ -13,7 +13,9 @@ LOG_FILE = os.path.join(BASE_DIR, "load.log")
 
 # ==== scopes autorisés → module Python ====
 ALLOWED_SCOPES = {
-    "PLANETS": "scraping.main_scrape_PLANETS_page",
+    "RESOURCES": "scraping.main_scrape_RESOURCES_page",
+    "PLANETS": "scraping.main_scrape_PLANETS_page"
+    
     # "ATMO_RES": "scraping.main_scrape_ATMO_RES_page",
     # "NAT_RES": "scraping.main_scrape_NAT_RES_page",
     # etc. 

@@ -1,0 +1,1 @@
+GRANT ODS_ROLE TO ;

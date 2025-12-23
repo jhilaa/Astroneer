@@ -17,15 +17,17 @@ BEGIN
 
     -- 4. Insert en bloc depuis JSON
     INSERT INTO STG_RAW.REF_RES (
-      LOG_ID, NAME, ICON_URL
+      LOG_ID, NAME, ICON_URL, RAW_RESOURCE_NAME
     )
     SELECT v_log_id,
            jt.NAME,
-           jt.ICON_URL
+           jt.ICON_URL,
+           jt.RAW_RESOURCE_NAME
     FROM JSON_TABLE(:body, '$[*]'
       COLUMNS (
         name        VARCHAR2(100) PATH '$.name',
-        icon_url    VARCHAR2(500)  PATH '$.icon_url'
+        icon_url    VARCHAR2(500)  PATH '$.icon_url',
+        raw_resource_name VARCHAR2(500)  PATH '$.raw_resource_name'
       )
     ) jt;
     v_count := SQL%ROWCOUNT;
