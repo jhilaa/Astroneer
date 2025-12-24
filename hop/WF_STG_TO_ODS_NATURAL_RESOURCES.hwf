@@ -70,11 +70,14 @@
       <create_parent_folder>N</create_parent_folder>
       <exec_per_row>N</exec_per_row>
       <filename>${PROJECT_HOME}/P_INIT_LOG.hpl</filename>
+      <logext/>
+      <logfile/>
       <loglevel>Basic</loglevel>
       <parameters>
         <parameter>
           <name>p_SCOPE</name>
-          <value>RESOURCE</value>
+          <stream_name/>
+          <value>NATURAL_RESOURCES</value>
         </parameter>
         <pass_all_parameters>Y</pass_all_parameters>
       </parameters>
@@ -126,8 +129,6 @@
       <create_parent_folder>N</create_parent_folder>
       <exec_per_row>N</exec_per_row>
       <filename>${PROJECT_HOME}/P_ODS_RESOURCE_NATURAL.hpl</filename>
-      <logext/>
-      <logfile/>
       <loglevel>Basic</loglevel>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>

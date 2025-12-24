@@ -28,8 +28,8 @@
       <schedulerType>0</schedulerType>
       <weekDay>1</weekDay>
       <parallel>N</parallel>
-      <xloc>128</xloc>
-      <yloc>128</yloc>
+      <xloc>48</xloc>
+      <yloc>32</yloc>
       <attributes_hac/>
     </action>
     <action>
@@ -54,8 +54,8 @@
       <set_logfile>N</set_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <parallel>N</parallel>
-      <xloc>432</xloc>
-      <yloc>128</yloc>
+      <xloc>384</xloc>
+      <yloc>32</yloc>
       <attributes_hac/>
     </action>
     <action>
@@ -74,7 +74,7 @@
       <parameters>
         <parameter>
           <name>p_SCOPE</name>
-          <value>RESOURCE</value>
+          <value>REFINED_RESOURCES</value>
         </parameter>
         <pass_all_parameters>Y</pass_all_parameters>
       </parameters>
@@ -84,8 +84,8 @@
       <set_logfile>N</set_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <parallel>N</parallel>
-      <xloc>576</xloc>
-      <yloc>128</yloc>
+      <xloc>560</xloc>
+      <yloc>32</yloc>
       <attributes_hac/>
     </action>
     <action>
@@ -110,8 +110,8 @@
       <set_logfile>N</set_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <parallel>N</parallel>
-      <xloc>272</xloc>
-      <yloc>128</yloc>
+      <xloc>192</xloc>
+      <yloc>32</yloc>
       <attributes_hac/>
     </action>
     <action>
@@ -126,8 +126,6 @@
       <create_parent_folder>N</create_parent_folder>
       <exec_per_row>N</exec_per_row>
       <filename>${PROJECT_HOME}/P_ODS_RESOURCE_REFINED.hpl</filename>
-      <logext/>
-      <logfile/>
       <loglevel>Basic</loglevel>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
@@ -138,8 +136,8 @@
       <set_logfile>N</set_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <parallel>N</parallel>
-      <xloc>752</xloc>
-      <yloc>128</yloc>
+      <xloc>560</xloc>
+      <yloc>144</yloc>
       <attributes_hac/>
     </action>
     <action>
@@ -164,8 +162,36 @@
       <set_logfile>N</set_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <parallel>N</parallel>
-      <xloc>960</xloc>
-      <yloc>128</yloc>
+      <xloc>1056</xloc>
+      <yloc>144</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>P_ODS_RESOURCE_RAW_TO_REFINED.hpl</name>
+      <description/>
+      <type>PIPELINE</type>
+      <attributes/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <clear_files>N</clear_files>
+      <clear_rows>N</clear_rows>
+      <create_parent_folder>N</create_parent_folder>
+      <exec_per_row>N</exec_per_row>
+      <filename>${PROJECT_HOME}/P_ODS_RESOURCE_RAW_TO_REFINED.hpl</filename>
+      <logext/>
+      <logfile/>
+      <loglevel>Basic</loglevel>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <params_from_previous>N</params_from_previous>
+      <run_configuration>local</run_configuration>
+      <set_append_logfile>N</set_append_logfile>
+      <set_logfile>N</set_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <parallel>N</parallel>
+      <xloc>832</xloc>
+      <yloc>144</yloc>
       <attributes_hac/>
     </action>
   </actions>
@@ -200,10 +226,17 @@
     </hop>
     <hop>
       <from>P_ODS_RESOURCE_REFINED.hpl</from>
-      <to>P_CLOSE_LOG.hpl</to>
+      <to>P_ODS_RESOURCE_RAW_TO_REFINED.hpl</to>
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
       <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>P_ODS_RESOURCE_RAW_TO_REFINED.hpl</from>
+      <to>P_CLOSE_LOG.hpl</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
     </hop>
   </hops>
   <notepads>

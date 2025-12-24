@@ -39,10 +39,6 @@
     </partitioning>
     <fields>
       <field>
-        <currency/>
-        <decimal/>
-        <format/>
-        <group/>
         <length>-1</length>
         <name>c_status_running</name>
         <nullif>RUNNING</nullif>
@@ -51,10 +47,6 @@
         <type>String</type>
       </field>
       <field>
-        <currency/>
-        <decimal/>
-        <format/>
-        <group/>
         <length>-1</length>
         <name>c_status_success</name>
         <nullif>SUCCESS</nullif>
@@ -63,10 +55,6 @@
         <type>String</type>
       </field>
       <field>
-        <currency/>
-        <decimal/>
-        <format/>
-        <group/>
         <length>-1</length>
         <name>c_status_error</name>
         <nullif>ERROR</nullif>
@@ -75,10 +63,6 @@
         <type>String</type>
       </field>
       <field>
-        <currency/>
-        <decimal/>
-        <format/>
-        <group/>
         <length>-1</length>
         <name>c_resource_type_nat</name>
         <nullif>NATURAL</nullif>
@@ -87,10 +71,6 @@
         <type>String</type>
       </field>
       <field>
-        <currency/>
-        <decimal/>
-        <format/>
-        <group/>
         <length>-1</length>
         <name>c_resource_type_ref</name>
         <nullif>REFINED</nullif>
