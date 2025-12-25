@@ -106,7 +106,7 @@
     <attributes/>
     <GUI>
       <xloc>240</xloc>
-      <yloc>160</yloc>
+      <yloc>256</yloc>
     </GUI>
   </transform>
   <transform>
@@ -129,7 +129,7 @@
     <attributes/>
     <GUI>
       <xloc>704</xloc>
-      <yloc>192</yloc>
+      <yloc>288</yloc>
     </GUI>
   </transform>
   <transform>
@@ -152,7 +152,7 @@
     <attributes/>
     <GUI>
       <xloc>704</xloc>
-      <yloc>368</yloc>
+      <yloc>464</yloc>
     </GUI>
   </transform>
   <transform>
@@ -250,7 +250,7 @@
     <attributes/>
     <GUI>
       <xloc>912</xloc>
-      <yloc>192</yloc>
+      <yloc>288</yloc>
     </GUI>
   </transform>
   <transform>
@@ -275,11 +275,13 @@
         <condition>=</condition>
         <field>NAME_NORM</field>
         <name>NAME_NORM</name>
+        <name2/>
       </key>
+      <orderby/>
       <schema>ODS</schema>
       <table>RESOURCES</table>
       <value>
-        <default>0</default>
+        <default>-1</default>
         <name>RESOURCE_ID</name>
         <rename>RESOURCE_ID_LKP</rename>
         <trim_type>none</trim_type>
@@ -289,7 +291,7 @@
     <attributes/>
     <GUI>
       <xloc>272</xloc>
-      <yloc>304</yloc>
+      <yloc>400</yloc>
     </GUI>
   </transform>
   <transform>
@@ -319,7 +321,7 @@
               <mask>####0;-####0</mask>
               <name>constant</name>
               <precision>0</precision>
-              <text>0</text>
+              <text>-1</text>
               <type>Integer</type>
             </value>
           </condition>
@@ -344,7 +346,7 @@
     <attributes/>
     <GUI>
       <xloc>480</xloc>
-      <yloc>304</yloc>
+      <yloc>400</yloc>
     </GUI>
   </transform>
   <transform>
@@ -369,7 +371,7 @@ FROM STG_RAW.NAT_RES
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>256</xloc>
+      <xloc>176</xloc>
       <yloc>48</yloc>
     </GUI>
   </transform>
@@ -402,7 +404,7 @@ FROM STG_RAW.NAT_RES
     <attributes/>
     <GUI>
       <xloc>64</xloc>
-      <yloc>304</yloc>
+      <yloc>400</yloc>
     </GUI>
   </transform>
   <transform>
@@ -434,7 +436,7 @@ FROM STG_RAW.NAT_RES
     <attributes/>
     <GUI>
       <xloc>416</xloc>
-      <yloc>160</yloc>
+      <yloc>256</yloc>
     </GUI>
   </transform>
   <transform>
@@ -459,7 +461,7 @@ FROM STG_RAW.NAT_RES
     <attributes/>
     <GUI>
       <xloc>64</xloc>
-      <yloc>160</yloc>
+      <yloc>256</yloc>
     </GUI>
   </transform>
   <transform>
@@ -514,7 +516,7 @@ FROM STG_RAW.NAT_RES
     <attributes/>
     <GUI>
       <xloc>912</xloc>
-      <yloc>368</yloc>
+      <yloc>464</yloc>
     </GUI>
   </transform>
   <transform_error_handling>

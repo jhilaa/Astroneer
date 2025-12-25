@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <workflow>
-  <name>WF_ODS_NATURAL_RESOURCES</name>
+  <name>WF_ODS_ATMOSPHERIC_RESOURCES</name>
   <name_sync_with_filename>N</name_sync_with_filename>
   <description/>
   <extended_description/>
@@ -84,7 +84,7 @@
       <set_logfile>N</set_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <parallel>N</parallel>
-      <xloc>592</xloc>
+      <xloc>560</xloc>
       <yloc>128</yloc>
       <attributes_hac/>
     </action>
@@ -115,7 +115,7 @@
       <attributes_hac/>
     </action>
     <action>
-      <name>P_ODS_RESOURCE_NATURAL.hpl</name>
+      <name>P_ODS_RESOURCE_ATMOSPHERIC.hpl</name>
       <description/>
       <type>PIPELINE</type>
       <attributes/>
@@ -125,7 +125,9 @@
       <clear_rows>Y</clear_rows>
       <create_parent_folder>N</create_parent_folder>
       <exec_per_row>N</exec_per_row>
-      <filename>${PROJECT_HOME}/P_ODS_RESOURCE_NATURAL.hpl</filename>
+      <filename>${PROJECT_HOME}/P_ODS_RESOURCE_ATMOSPHERIC.hpl</filename>
+      <logext/>
+      <logfile/>
       <loglevel>Basic</loglevel>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
@@ -136,8 +138,8 @@
       <set_logfile>N</set_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <parallel>N</parallel>
-      <xloc>800</xloc>
-      <yloc>240</yloc>
+      <xloc>752</xloc>
+      <yloc>128</yloc>
       <attributes_hac/>
     </action>
     <action>
@@ -162,35 +164,7 @@
       <set_logfile>N</set_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <parallel>N</parallel>
-      <xloc>1040</xloc>
-      <yloc>240</yloc>
-      <attributes_hac/>
-    </action>
-    <action>
-      <name>P_ODS_RESOURCE_NATURAL_NULL.hpl</name>
-      <description/>
-      <type>PIPELINE</type>
-      <attributes/>
-      <add_date>N</add_date>
-      <add_time>N</add_time>
-      <clear_files>N</clear_files>
-      <clear_rows>N</clear_rows>
-      <create_parent_folder>N</create_parent_folder>
-      <exec_per_row>N</exec_per_row>
-      <filename>${PROJECT_HOME}/P_ODS_RESOURCE_NATURAL_NULL.hpl</filename>
-      <logext/>
-      <logfile/>
-      <loglevel>Basic</loglevel>
-      <parameters>
-        <pass_all_parameters>Y</pass_all_parameters>
-      </parameters>
-      <params_from_previous>N</params_from_previous>
-      <run_configuration>local</run_configuration>
-      <set_append_logfile>N</set_append_logfile>
-      <set_logfile>N</set_logfile>
-      <wait_until_finished>Y</wait_until_finished>
-      <parallel>N</parallel>
-      <xloc>800</xloc>
+      <xloc>976</xloc>
       <yloc>128</yloc>
       <attributes_hac/>
     </action>
@@ -218,25 +192,18 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>P_ODS_RESOURCE_NATURAL.hpl</from>
+      <from>P_INIT_LOG.hpl</from>
+      <to>P_ODS_RESOURCE_ATMOSPHERIC.hpl</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>P_ODS_RESOURCE_ATMOSPHERIC.hpl</from>
       <to>P_CLOSE_LOG.hpl</to>
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
       <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>P_INIT_LOG.hpl</from>
-      <to>P_ODS_RESOURCE_NATURAL_NULL.hpl</to>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>P_ODS_RESOURCE_NATURAL_NULL.hpl</from>
-      <to>P_ODS_RESOURCE_NATURAL.hpl</to>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>Y</unconditional>
     </hop>
   </hops>
   <notepads>

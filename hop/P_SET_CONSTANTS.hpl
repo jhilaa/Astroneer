@@ -78,6 +78,22 @@
         <set_empty_string>N</set_empty_string>
         <type>String</type>
       </field>
+      <field>
+        <length>-1</length>
+        <name>c_resource_type_atmo</name>
+        <nullif>ATMOSPHERIC</nullif>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+        <type>String</type>
+      </field>
+      <field>
+        <length>-1</length>
+        <name>c_resource_type_composed</name>
+        <nullif>COMPOSED</nullif>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+        <type>String</type>
+      </field>
     </fields>
     <interval_in_ms>5000</interval_in_ms>
     <last_time_field>FiveSecondsAgo</last_time_field>
@@ -106,31 +122,43 @@
         <default_value>RUNNING</default_value>
         <field_name>c_status_running</field_name>
         <variable_name>c_STATUS_RUNNING</variable_name>
-        <variable_type>PARENT_WORKFLOW</variable_type>
+        <variable_type>ROOT_WORKFLOW</variable_type>
       </field>
       <field>
         <default_value>ERROR</default_value>
         <field_name>c_status_error</field_name>
         <variable_name>c_STATUS_ERROR</variable_name>
-        <variable_type>PARENT_WORKFLOW</variable_type>
+        <variable_type>ROOT_WORKFLOW</variable_type>
       </field>
       <field>
         <default_value>SUCCESS</default_value>
         <field_name>c_status_success</field_name>
         <variable_name>c_STATUS_SUCCESS</variable_name>
-        <variable_type>PARENT_WORKFLOW</variable_type>
+        <variable_type>ROOT_WORKFLOW</variable_type>
       </field>
       <field>
         <default_value>NATURAL</default_value>
         <field_name>c_resource_type_nat</field_name>
         <variable_name>c_RES_TYPE_NATURAL</variable_name>
-        <variable_type>PARENT_WORKFLOW</variable_type>
+        <variable_type>ROOT_WORKFLOW</variable_type>
       </field>
       <field>
         <default_value>REFINED</default_value>
         <field_name>c_resource_type_ref</field_name>
         <variable_name>c_RES_TYPE_REFINED</variable_name>
-        <variable_type>PARENT_WORKFLOW</variable_type>
+        <variable_type>ROOT_WORKFLOW</variable_type>
+      </field>
+      <field>
+        <default_value>ATMOSPHERIC</default_value>
+        <field_name>c_resource_type_atmo</field_name>
+        <variable_name>c_RES_TYPE_ATMOSPHERIC</variable_name>
+        <variable_type>ROOT_WORKFLOW</variable_type>
+      </field>
+      <field>
+        <default_value>COMPOSED</default_value>
+        <field_name>c_resource_type_composed</field_name>
+        <variable_name>c_RES_TYPE_COMPOSED</variable_name>
+        <variable_type>ROOT_WORKFLOW</variable_type>
       </field>
     </fields>
     <use_formatting>N</use_formatting>
