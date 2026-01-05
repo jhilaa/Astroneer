@@ -39,6 +39,10 @@
     </partitioning>
     <fields>
       <field>
+        <currency/>
+        <decimal/>
+        <format/>
+        <group/>
         <length>-1</length>
         <name>c_status_running</name>
         <nullif>RUNNING</nullif>
@@ -47,6 +51,10 @@
         <type>String</type>
       </field>
       <field>
+        <currency/>
+        <decimal/>
+        <format/>
+        <group/>
         <length>-1</length>
         <name>c_status_success</name>
         <nullif>SUCCESS</nullif>
@@ -55,6 +63,10 @@
         <type>String</type>
       </field>
       <field>
+        <currency/>
+        <decimal/>
+        <format/>
+        <group/>
         <length>-1</length>
         <name>c_status_error</name>
         <nullif>ERROR</nullif>
@@ -63,6 +75,10 @@
         <type>String</type>
       </field>
       <field>
+        <currency/>
+        <decimal/>
+        <format/>
+        <group/>
         <length>-1</length>
         <name>c_resource_type_nat</name>
         <nullif>NATURAL</nullif>
@@ -71,6 +87,10 @@
         <type>String</type>
       </field>
       <field>
+        <currency/>
+        <decimal/>
+        <format/>
+        <group/>
         <length>-1</length>
         <name>c_resource_type_ref</name>
         <nullif>REFINED</nullif>
@@ -79,6 +99,10 @@
         <type>String</type>
       </field>
       <field>
+        <currency/>
+        <decimal/>
+        <format/>
+        <group/>
         <length>-1</length>
         <name>c_resource_type_atmo</name>
         <nullif>ATMOSPHERIC</nullif>
@@ -87,9 +111,25 @@
         <type>String</type>
       </field>
       <field>
+        <currency/>
+        <decimal/>
+        <format/>
+        <group/>
         <length>-1</length>
         <name>c_resource_type_composed</name>
         <nullif>COMPOSED</nullif>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+        <type>String</type>
+      </field>
+      <field>
+        <currency/>
+        <decimal/>
+        <format/>
+        <group/>
+        <length>-1</length>
+        <name>c_resource_type_special</name>
+        <nullif>SPECIAL</nullif>
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
         <type>String</type>
@@ -158,6 +198,12 @@
         <default_value>COMPOSED</default_value>
         <field_name>c_resource_type_composed</field_name>
         <variable_name>c_RES_TYPE_COMPOSED</variable_name>
+        <variable_type>ROOT_WORKFLOW</variable_type>
+      </field>
+      <field>
+        <default_value>SPECIAL</default_value>
+        <field_name>c_resource_type_special</field_name>
+        <variable_name>c_RES_TYPE_SPECIAL</variable_name>
         <variable_type>ROOT_WORKFLOW</variable_type>
       </field>
     </fields>

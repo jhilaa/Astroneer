@@ -17,7 +17,7 @@ BEGIN
 
     -- 4. Insert en bloc depuis JSON
     INSERT INTO STG_RAW.PLANET (
-      LOG_ID, NAME, TYPE, PRIMARY_RESOURCE, SECONDARY_RESOURCE, ATMOSPHERE, DIFFICULTY, SOLAR_POWER, WIND_POWER, CORE_SYMBOL_URL, CORE_MATERIAL) 
+      LOG_ID, NAME, TYPE, PRIMARY_RESOURCE, SECONDARY_RESOURCE, ATMOSPHERE, DIFFICULTY, SOLAR_POWER, WIND_POWER, CORE_SYMBOL_URL, CORE_MATERIAL,ICON_URL) 
 
     SELECT v_log_id,
 		   jt.NAME,             
@@ -29,7 +29,8 @@ BEGIN
 		   jt.SOLAR_POWER,       
 		   jt.WIND_POWER,       
 		   jt.CORE_SYMBOL_URL,   
-		   jt.CORE_MATERIAL        
+		   jt.CORE_MATERIAL,
+		   jt.ICON_URL
     FROM JSON_TABLE(:body, '$[*]'
       COLUMNS (
         name             	VARCHAR2(100) PATH '$.name',
@@ -41,7 +42,8 @@ BEGIN
         solar_power         VARCHAR2(500)  PATH '$.solar_power',
         wind_power         	VARCHAR2(500)  PATH '$.wind_power',
         core_symbol_url     VARCHAR2(500)  PATH '$.core_symbol_url',
-        core_material       VARCHAR2(500)  PATH '$.core_material'
+        core_material       VARCHAR2(500)  PATH '$.core_material',
+        icon_url            VARCHAR2(500)  PATH '$.icon_url'
       )
     ) jt;
     v_count := SQL%ROWCOUNT;

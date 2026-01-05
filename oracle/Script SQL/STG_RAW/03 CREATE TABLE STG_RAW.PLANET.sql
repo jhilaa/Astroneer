@@ -10,5 +10,6 @@ CREATE TABLE STG_RAW.PLANET (
   WIND_POWER        VARCHAR2(50),    -- Puissance éolienne
   CORE_SYMBOL       VARCHAR2(500),   -- URL de l’icône du cœur
   CORE_MATERIAL     VARCHAR2(100),   -- Matériau du cœur
+  ICON_URL          VARCHAR2(500),
   LOG_ID            NUMBER REFERENCES STG_RAW.LOG(LOG_ID)
 );

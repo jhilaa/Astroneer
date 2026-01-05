@@ -44,10 +44,15 @@ def get_planets_data(planet_data_src):
                         planet_data = []
                         for index, td in enumerate (tr.select("th, td")):
                             planet_data.append(td.get_text(separator=";", strip=True))
+                            # icône
+                            if (index == 0) :
+                                planet_icon_data = td.select_one("a:has(img)")
+                                planet_icon_data_img = planet_icon_data.select_one("img")
+                                planet_icon = planet_icon_data_img.get("data-src")                       
                             # cas particulier du core symbol
                             if (index == 9) :
-                                icon_data = td.select_one("a:has(img)")
-                                img = icon_data.select_one("img")
+                                core_icon_data = td.select_one("a:has(img)")
+                                img = core_icon_data.select_one("img")
                                 core_symbol = img.get("data-src")
                         if not planet_data:
                             continue
@@ -62,7 +67,8 @@ def get_planets_data(planet_data_src):
                             "wind_power": planet_data[7] if len(planet_data) > 7 else None,
                             "gateway_chamber_power_required": planet_data[8] if len(planet_data) > 8 else None,
                             "core_symbol_url": core_symbol,
-                            "core_material": planet_data[10] if len(planet_data) > 10 else None
+                            "core_material": planet_data[10] if len(planet_data) > 10 else None,
+                            "icon_url" : planet_icon
                         }
                         planets.append(planet)
                     return planets

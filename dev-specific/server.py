@@ -13,8 +13,8 @@ LOG_FILE = os.path.join(BASE_DIR, "load.log")
 
 # ==== scopes autorisés → module Python ====
 ALLOWED_SCOPES = {
-    "RESOURCES": "scraping.main_scrape_RESOURCES_page",
-    "PLANETS": "scraping.main_scrape_PLANETS_page"
+    "RESOURCES": "scraping.module_resources",
+    "PLANETS": "scraping.module_planets"
     
     # "ATMO_RES": "scraping.main_scrape_ATMO_RES_page",
     # "NAT_RES": "scraping.main_scrape_NAT_RES_page",
@@ -46,4 +46,4 @@ async def run_load(req: Request):
         return {"status": "success", "scope": scope, "output": result.stdout}
 
     except subprocess.CalledProcessError as e:
-        return {"status": "error", "scope": scope, "output": e.stderr}
+        return {"status": "error!", "scope": scope, "output": e.stderr}
