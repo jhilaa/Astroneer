@@ -75,8 +75,8 @@
       <set_logfile>N</set_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <parallel>N</parallel>
-      <xloc>304</xloc>
-      <yloc>176</yloc>
+      <xloc>992</xloc>
+      <yloc>48</yloc>
       <attributes_hac/>
     </action>
     <action>
@@ -101,8 +101,8 @@
       <set_logfile>N</set_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <parallel>N</parallel>
-      <xloc>656</xloc>
-      <yloc>176</yloc>
+      <xloc>992</xloc>
+      <yloc>160</yloc>
       <attributes_hac/>
     </action>
     <action>
@@ -125,8 +125,8 @@
       <set_logfile>N</set_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <parallel>N</parallel>
-      <xloc>656</xloc>
-      <yloc>304</yloc>
+      <xloc>592</xloc>
+      <yloc>160</yloc>
       <attributes_hac/>
     </action>
     <action>
@@ -149,7 +149,55 @@
       <set_logfile>N</set_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <parallel>N</parallel>
-      <xloc>1024</xloc>
+      <xloc>656</xloc>
+      <yloc>48</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>WF_STG_TO_ODS_NATURAL_RESOURCES_BY_PLANET.hwf</name>
+      <description/>
+      <type>WORKFLOW</type>
+      <attributes/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <create_parent_folder>N</create_parent_folder>
+      <exec_per_row>N</exec_per_row>
+      <filename>${PROJECT_HOME}/WF_STG_TO_ODS_NATURAL_RESOURCES_BY_PLANET.hwf</filename>
+      <loglevel>Nothing</loglevel>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <params_from_previous>N</params_from_previous>
+      <run_configuration>local</run_configuration>
+      <set_append_logfile>N</set_append_logfile>
+      <set_logfile>N</set_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <parallel>N</parallel>
+      <xloc>224</xloc>
+      <yloc>160</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>WF_STG_TO_ODS_ATMOSPHERIC_RESOURCES_BY_PLANET.hwf</name>
+      <description/>
+      <type>WORKFLOW</type>
+      <attributes/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <create_parent_folder>N</create_parent_folder>
+      <exec_per_row>N</exec_per_row>
+      <filename>${PROJECT_HOME}/WF_STG_TO_ODS_ATMOSPHERIC_RESOURCES_BY_PLANET.hwf</filename>
+      <loglevel>Nothing</loglevel>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <params_from_previous>N</params_from_previous>
+      <run_configuration>local</run_configuration>
+      <set_append_logfile>N</set_append_logfile>
+      <set_logfile>N</set_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <parallel>N</parallel>
+      <xloc>224</xloc>
       <yloc>304</yloc>
       <attributes_hac/>
     </action>
@@ -161,13 +209,6 @@
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
       <unconditional>Y</unconditional>
-    </hop>
-    <hop>
-      <from>WF_STG_TO_ODS_NATURAL_RESOURCES.hwf</from>
-      <to>WF_STG_TO_ODS_SPECIAL_RESOURCES.hwf</to>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
     </hop>
     <hop>
       <from>WF_STG_TO_ODS_SPECIAL_RESOURCES.hwf</from>
@@ -184,11 +225,32 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
+      <from>WF_STG_TO_ODS_NATURAL_RESOURCES_BY_PLANET.hwf</from>
+      <to>WF_STG_TO_ODS_ATMOSPHERIC_RESOURCES_BY_PLANET.hwf</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
       <from>WF_STG_TO_ODS_COMPOSED_RESOURCES.hwf</from>
+      <to>WF_STG_TO_ODS_NATURAL_RESOURCES_BY_PLANET.hwf</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>WF_STG_TO_ODS_NATURAL_RESOURCES.hwf</from>
       <to>WF_STG_TO_ODS_ATMOSPHERIC_RESOURCES.hwf</to>
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
       <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>WF_STG_TO_ODS_ATMOSPHERIC_RESOURCES.hwf</from>
+      <to>WF_STG_TO_ODS_SPECIAL_RESOURCES.hwf</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
     </hop>
   </hops>
   <notepads>

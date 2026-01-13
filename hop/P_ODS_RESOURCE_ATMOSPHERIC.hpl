@@ -57,11 +57,6 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Sort rows</from>
-      <to>CLEAN RESOURCE_NAME</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>SELECT STG_RAW.ATMO_RES</from>
       <to>Get variables</to>
       <enabled>Y</enabled>
@@ -74,6 +69,16 @@
     <hop>
       <from>GET SYSTEM TIMESTAMP INSERT</from>
       <to>INSERT RESOURCE</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Sort rows</from>
+      <to>Clean ICON_SRC_URL</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Clean ICON_SRC_URL</from>
+      <to>CLEAN RESOURCE_NAME</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -128,8 +133,8 @@
     </fields>
     <attributes/>
     <GUI>
-      <xloc>704</xloc>
-      <yloc>192</yloc>
+      <xloc>752</xloc>
+      <yloc>240</yloc>
     </GUI>
   </transform>
   <transform>
@@ -151,8 +156,8 @@
     </fields>
     <attributes/>
     <GUI>
-      <xloc>704</xloc>
-      <yloc>368</yloc>
+      <xloc>752</xloc>
+      <yloc>416</yloc>
     </GUI>
   </transform>
   <transform>
@@ -168,10 +173,6 @@
     </partitioning>
     <fields>
       <field>
-        <currency/>
-        <decimal/>
-        <format/>
-        <group/>
         <length>-1</length>
         <name>v_LOG_ID</name>
         <precision>-1</precision>
@@ -180,10 +181,6 @@
         <variable>${g_LOG_ID}</variable>
       </field>
       <field>
-        <currency/>
-        <decimal/>
-        <format/>
-        <group/>
         <length>-1</length>
         <name>v_RES_TYPE_ATMOSPHERIC</name>
         <precision>-1</precision>
@@ -194,7 +191,7 @@
     </fields>
     <attributes/>
     <GUI>
-      <xloc>416</xloc>
+      <xloc>368</xloc>
       <yloc>48</yloc>
     </GUI>
   </transform>
@@ -235,7 +232,7 @@
       </field>
       <field>
         <column_name>ICON</column_name>
-        <stream_name>ICON_URL</stream_name>
+        <stream_name>CLEAN_ICON_SRC_URL</stream_name>
       </field>
       <field>
         <column_name>LOG_ID</column_name>
@@ -246,19 +243,22 @@
     <only_when_have_rows>N</only_when_have_rows>
     <partitioning_daily>N</partitioning_daily>
     <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
     <partitioning_monthly>Y</partitioning_monthly>
+    <return_field/>
     <return_keys>N</return_keys>
     <schema>ODS</schema>
     <specify_fields>Y</specify_fields>
     <table>RESOURCES</table>
+    <tablename_field/>
     <tablename_in_field>N</tablename_in_field>
     <tablename_in_table>Y</tablename_in_table>
     <truncate>N</truncate>
     <use_batch>Y</use_batch>
     <attributes/>
     <GUI>
-      <xloc>912</xloc>
-      <yloc>192</yloc>
+      <xloc>960</xloc>
+      <yloc>240</yloc>
     </GUI>
   </transform>
   <transform>
@@ -287,7 +287,7 @@
       <schema>ODS</schema>
       <table>RESOURCES</table>
       <value>
-        <default>0</default>
+        <default>-1</default>
         <name>RESOURCE_ID</name>
         <rename>RESOURCE_ID_LKP</rename>
         <trim_type>none</trim_type>
@@ -327,7 +327,7 @@
               <mask>####0;-####0</mask>
               <name>constant</name>
               <precision>0</precision>
-              <text>0</text>
+              <text>-1</text>
               <type>Integer</type>
             </value>
           </condition>
@@ -351,7 +351,7 @@
     <send_true_to>GET SYSTEM TIMESTAMP INSERT</send_true_to>
     <attributes/>
     <GUI>
-      <xloc>480</xloc>
+      <xloc>528</xloc>
       <yloc>304</yloc>
     </GUI>
   </transform>
@@ -377,7 +377,7 @@ FROM STG_RAW.ATMO_RES
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>256</xloc>
+      <xloc>192</xloc>
       <yloc>48</yloc>
     </GUI>
   </transform>
@@ -441,8 +441,8 @@ FROM STG_RAW.ATMO_RES
     <unique_rows>N</unique_rows>
     <attributes/>
     <GUI>
-      <xloc>416</xloc>
-      <yloc>160</yloc>
+      <xloc>496</xloc>
+      <yloc>48</yloc>
     </GUI>
   </transform>
   <transform>
@@ -484,11 +484,13 @@ FROM STG_RAW.ATMO_RES
     <commit>100</commit>
     <connection>astroneerdb-ods</connection>
     <error_ignored>N</error_ignored>
+    <ignore_flag_field/>
     <lookup>
       <key>
         <condition>=</condition>
         <field>RESOURCE_ID</field>
         <name>RESOURCE_ID_LKP</name>
+        <name2/>
       </key>
       <schema>ODS</schema>
       <table>RESOURCES</table>
@@ -506,7 +508,7 @@ FROM STG_RAW.ATMO_RES
       </value>
       <value>
         <name>ICON</name>
-        <rename>ICON_URL</rename>
+        <rename>CLEAN_ICON_SRC_URL</rename>
       </value>
       <value>
         <name>LOG_ID</name>
@@ -521,8 +523,53 @@ FROM STG_RAW.ATMO_RES
     <use_batch>N</use_batch>
     <attributes/>
     <GUI>
-      <xloc>912</xloc>
-      <yloc>368</yloc>
+      <xloc>960</xloc>
+      <yloc>416</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Clean ICON_SRC_URL</name>
+    <type>RegexEval</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <script>(.*(?:png|jpg|jpeg|webp|gif)).*</script>
+    <matcher>ICON_URL</matcher>
+    <resultfieldname>result</resultfieldname>
+    <usevar>N</usevar>
+    <allowcapturegroups>Y</allowcapturegroups>
+    <replacefields>N</replacefields>
+    <canoneq>N</canoneq>
+    <caseinsensitive>N</caseinsensitive>
+    <comment>N</comment>
+    <dotall>N</dotall>
+    <multiline>N</multiline>
+    <unicode>N</unicode>
+    <unix>N</unix>
+    <fields>
+      <field>
+        <name>CLEAN_ICON_SRC_URL</name>
+        <type>String</type>
+        <format/>
+        <group/>
+        <decimal/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <nullif/>
+        <ifnull/>
+        <trimtype>none</trimtype>
+        <currency/>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>496</xloc>
+      <yloc>160</yloc>
     </GUI>
   </transform>
   <transform_error_handling>

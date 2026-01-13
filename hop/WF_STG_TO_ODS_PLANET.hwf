@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <workflow>
-  <name>WF_ODS_REFINED_RESOURCES</name>
+  <name>WF_ODS_PLANET</name>
   <name_sync_with_filename>N</name_sync_with_filename>
   <description/>
   <extended_description/>
@@ -28,8 +28,8 @@
       <schedulerType>0</schedulerType>
       <weekDay>1</weekDay>
       <parallel>N</parallel>
-      <xloc>48</xloc>
-      <yloc>32</yloc>
+      <xloc>128</xloc>
+      <yloc>128</yloc>
       <attributes_hac/>
     </action>
     <action>
@@ -56,8 +56,8 @@
       <set_logfile>N</set_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <parallel>N</parallel>
-      <xloc>384</xloc>
-      <yloc>32</yloc>
+      <xloc>432</xloc>
+      <yloc>128</yloc>
       <attributes_hac/>
     </action>
     <action>
@@ -76,7 +76,7 @@
       <parameters>
         <parameter>
           <name>p_SCOPE</name>
-          <value>REFINED_RESOURCES</value>
+          <value>NATURAL_RESOURCES</value>
         </parameter>
         <pass_all_parameters>Y</pass_all_parameters>
       </parameters>
@@ -86,8 +86,8 @@
       <set_logfile>N</set_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <parallel>N</parallel>
-      <xloc>560</xloc>
-      <yloc>32</yloc>
+      <xloc>592</xloc>
+      <yloc>128</yloc>
       <attributes_hac/>
     </action>
     <action>
@@ -112,12 +112,12 @@
       <set_logfile>N</set_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <parallel>N</parallel>
-      <xloc>192</xloc>
-      <yloc>32</yloc>
+      <xloc>272</xloc>
+      <yloc>128</yloc>
       <attributes_hac/>
     </action>
     <action>
-      <name>P_ODS_RESOURCE_REFINED.hpl</name>
+      <name>P_ODS_PLANET.hpl</name>
       <description/>
       <type>PIPELINE</type>
       <attributes/>
@@ -127,7 +127,7 @@
       <clear_rows>Y</clear_rows>
       <create_parent_folder>N</create_parent_folder>
       <exec_per_row>N</exec_per_row>
-      <filename>${PROJECT_HOME}/P_ODS_RESOURCE_REFINED.hpl</filename>
+      <filename>${PROJECT_HOME}/P_ODS_PLANET.hpl</filename>
       <loglevel>Basic</loglevel>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
@@ -138,8 +138,8 @@
       <set_logfile>N</set_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <parallel>N</parallel>
-      <xloc>560</xloc>
-      <yloc>144</yloc>
+      <xloc>800</xloc>
+      <yloc>128</yloc>
       <attributes_hac/>
     </action>
     <action>
@@ -164,34 +164,8 @@
       <set_logfile>N</set_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <parallel>N</parallel>
-      <xloc>1056</xloc>
-      <yloc>144</yloc>
-      <attributes_hac/>
-    </action>
-    <action>
-      <name>P_ODS_RESOURCE_RAW_TO_REFINED.hpl</name>
-      <description/>
-      <type>PIPELINE</type>
-      <attributes/>
-      <add_date>N</add_date>
-      <add_time>N</add_time>
-      <clear_files>N</clear_files>
-      <clear_rows>N</clear_rows>
-      <create_parent_folder>N</create_parent_folder>
-      <exec_per_row>N</exec_per_row>
-      <filename>${PROJECT_HOME}/P_ODS_RESOURCE_RAW_TO_REFINED.hpl</filename>
-      <loglevel>Basic</loglevel>
-      <parameters>
-        <pass_all_parameters>Y</pass_all_parameters>
-      </parameters>
-      <params_from_previous>N</params_from_previous>
-      <run_configuration>local</run_configuration>
-      <set_append_logfile>N</set_append_logfile>
-      <set_logfile>N</set_logfile>
-      <wait_until_finished>Y</wait_until_finished>
-      <parallel>N</parallel>
-      <xloc>832</xloc>
-      <yloc>144</yloc>
+      <xloc>976</xloc>
+      <yloc>128</yloc>
       <attributes_hac/>
     </action>
   </actions>
@@ -218,25 +192,18 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>P_INIT_LOG.hpl</from>
-      <to>P_ODS_RESOURCE_REFINED.hpl</to>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>P_ODS_RESOURCE_REFINED.hpl</from>
-      <to>P_ODS_RESOURCE_RAW_TO_REFINED.hpl</to>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>P_ODS_RESOURCE_RAW_TO_REFINED.hpl</from>
+      <from>P_ODS_PLANET.hpl</from>
       <to>P_CLOSE_LOG.hpl</to>
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
-      <unconditional>Y</unconditional>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>P_INIT_LOG.hpl</from>
+      <to>P_ODS_PLANET.hpl</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
     </hop>
   </hops>
   <notepads>

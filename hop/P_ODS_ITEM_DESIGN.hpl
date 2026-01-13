@@ -56,16 +56,6 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Table input</from>
-      <to>Get LOG_ID</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Get LOG_ID</from>
-      <to>Copy of field</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Lookup Resource</from>
       <to>Abort</to>
       <enabled>Y</enabled>
@@ -77,17 +67,42 @@
     </hop>
     <hop>
       <from>Filter rows</from>
-      <to>Database lookup</to>
+      <to>Database lookup in ITEM_DESIGN</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Database lookup</from>
-      <to>GET SYSTEM TIMESTAMP INSERT</to>
+      <from>Database lookup in ITEM_DESIGN</from>
+      <to>GET SYSTEM TIMESTAMP</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>GET SYSTEM TIMESTAMP INSERT</from>
+      <from>Flag new line</from>
+      <to>Update</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Flag new line</from>
       <to>Table output</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>GET SYSTEM TIMESTAMP</from>
+      <to>Flag exist in ITEM_DESIGN</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Flag exist in ITEM_DESIGN</from>
+      <to>Flag new line</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Table input</from>
+      <to>Get LOG_ID</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Get LOG_ID</from>
+      <to>Copy of field</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -104,11 +119,12 @@
     </partitioning>
     <abort_option>ABORT_WITH_ERROR</abort_option>
     <always_log_rows>Y</always_log_rows>
+    <message>Ressource inconnue</message>
     <row_threshold>0</row_threshold>
     <attributes/>
     <GUI>
-      <xloc>96</xloc>
-      <yloc>240</yloc>
+      <xloc>64</xloc>
+      <yloc>128</yloc>
     </GUI>
   </transform>
   <transform>
@@ -134,12 +150,12 @@
     <failIfNoFile>Y</failIfNoFile>
     <attributes/>
     <GUI>
-      <xloc>224</xloc>
+      <xloc>240</xloc>
       <yloc>32</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>Database lookup</name>
+    <name>Database lookup in ITEM_DESIGN</name>
     <type>DBLookup</type>
     <description/>
     <distribute>Y</distribute>
@@ -171,14 +187,21 @@
       <value>
         <default>0</default>
         <name>ITEM_ID</name>
-        <rename>LKP_ITEM_ID</rename>
+        <rename>LKP_ITEM_ID_IN_ITEM_DESIGN</rename>
+        <trim_type>none</trim_type>
+        <type>Number</type>
+      </value>
+      <value>
+        <default>0</default>
+        <name>RESOURCE_ID</name>
+        <rename>LKP_RESOURCE_ID_IN_ITEM_DESIGN</rename>
         <trim_type>none</trim_type>
         <type>Number</type>
       </value>
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>352</xloc>
+      <xloc>400</xloc>
       <yloc>272</yloc>
     </GUI>
   </transform>
@@ -197,7 +220,7 @@
       <condition>
         <conditions>
 </conditions>
-        <function>=</function>
+        <function>&lt;></function>
         <leftvalue>LKP_RESOURCE_ID</leftvalue>
         <negated>N</negated>
         <operator>-</operator>
@@ -219,7 +242,73 @@
     </GUI>
   </transform>
   <transform>
-    <name>GET SYSTEM TIMESTAMP INSERT</name>
+    <name>Flag exist in ITEM_DESIGN</name>
+    <type>Calculator</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <calculation>
+      <calc_type>ADD</calc_type>
+      <field_a>LKP_ITEM_ID_IN_ITEM_DESIGN</field_a>
+      <field_b>LKP_RESOURCE_ID_IN_ITEM_DESIGN</field_b>
+      <field_name>FLAG_IN_ITEM_DESIGN</field_name>
+      <remove>N</remove>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <value_type>Number</value_type>
+    </calculation>
+    <failIfNoFile>Y</failIfNoFile>
+    <attributes/>
+    <GUI>
+      <xloc>816</xloc>
+      <yloc>272</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Flag new line</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compare>
+      <condition>
+        <conditions>
+</conditions>
+        <function>=</function>
+        <leftvalue>FLAG_IN_ITEM_DESIGN</leftvalue>
+        <negated>N</negated>
+        <operator>-</operator>
+        <value>
+          <isnull>N</isnull>
+          <length>-1</length>
+          <mask>######0.0###################;-######0.0###################</mask>
+          <name>constant</name>
+          <precision>-1</precision>
+          <text>0,0</text>
+          <type>BigNumber</type>
+        </value>
+      </condition>
+    </compare>
+    <send_false_to>Update</send_false_to>
+    <send_true_to>Table output</send_true_to>
+    <attributes/>
+    <GUI>
+      <xloc>992</xloc>
+      <yloc>272</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>GET SYSTEM TIMESTAMP</name>
     <type>SystemInfo</type>
     <description/>
     <distribute>Y</distribute>
@@ -231,41 +320,14 @@
     </partitioning>
     <fields>
       <field>
-        <name>v_INSERT_TS</name>
+        <name>v_Timestamp</name>
         <type>system date (variable)</type>
       </field>
     </fields>
     <attributes/>
     <GUI>
-      <xloc>560</xloc>
+      <xloc>624</xloc>
       <yloc>272</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>Get LOG_ID</name>
-    <type>GetVariable</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <length>-1</length>
-        <name>v_LOG_ID</name>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <type>String</type>
-        <variable>${g_LOG_ID}</variable>
-      </field>
-    </fields>
-    <attributes/>
-    <GUI>
-      <xloc>128</xloc>
-      <yloc>32</yloc>
     </GUI>
   </transform>
   <transform>
@@ -324,6 +386,7 @@
       <schema>ODS</schema>
       <table>RESOURCES</table>
       <value>
+        <default>0</default>
         <name>RESOURCE_ID</name>
         <rename>LKP_RESOURCE_ID</rename>
         <trim_type>none</trim_type>
@@ -439,7 +502,6 @@
     <newfield>RESOURCE_SPLIT</newfield>
     <resetrownumber>Y</resetrownumber>
     <rownum>N</rownum>
-    <rownum_field/>
     <splitfield>RECIPE_INTERMEDIATE</splitfield>
     <attributes/>
     <GUI>
@@ -497,7 +559,6 @@
     </partitioning>
     <connection>astroneerdb-ods</connection>
     <execute_each_row>N</execute_each_row>
-    <limit>25</limit>
     <sql>SELECT
   ITEM_ID
 , URL
@@ -511,7 +572,9 @@
 , CRAFTED_AT
 , DESIGN AS RECIPE
 , UNLOCK_COST
-FROM ODS.ITEM</sql>
+FROM ODS.ITEM
+WHERE DESIGN is not null 
+</sql>
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
@@ -540,7 +603,7 @@ FROM ODS.ITEM</sql>
     <fields>
       <field>
         <column_name>ITEM_ID</column_name>
-        <stream_name>LKP_ITEM_ID</stream_name>
+        <stream_name>ITEM_ID</stream_name>
       </field>
       <field>
         <column_name>RESOURCE_ID</column_name>
@@ -556,7 +619,7 @@ FROM ODS.ITEM</sql>
       </field>
       <field>
         <column_name>CREATE_TS</column_name>
-        <stream_name>v_INSERT_TS</stream_name>
+        <stream_name>v_Timestamp</stream_name>
       </field>
     </fields>
     <ignore_errors>N</ignore_errors>
@@ -570,17 +633,88 @@ FROM ODS.ITEM</sql>
     <table>ITEM_DESIGN</table>
     <tablename_in_field>N</tablename_in_field>
     <tablename_in_table>Y</tablename_in_table>
-    <truncate>Y</truncate>
+    <truncate>N</truncate>
     <use_batch>Y</use_batch>
     <attributes/>
     <GUI>
-      <xloc>752</xloc>
-      <yloc>272</yloc>
+      <xloc>992</xloc>
+      <yloc>144</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Update</name>
+    <type>Update</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <commit>100</commit>
+    <connection>astroneerdb-ods</connection>
+    <error_ignored>N</error_ignored>
+    <lookup>
+      <key>
+        <condition>=</condition>
+        <field>ITEM_ID</field>
+        <name>LKP_ITEM_ID_IN_ITEM_DESIGN</name>
+      </key>
+      <key>
+        <condition>=</condition>
+        <field>RESOURCE_ID</field>
+        <name>LKP_RESOURCE_ID</name>
+      </key>
+      <schema>ODS</schema>
+      <table>ITEM_DESIGN</table>
+      <value>
+        <name>QUANTITY</name>
+        <rename>QUANTITY</rename>
+      </value>
+      <value>
+        <name>UPDATE_TS</name>
+        <rename>v_Timestamp</rename>
+      </value>
+    </lookup>
+    <skip_lookup>N</skip_lookup>
+    <use_batch>N</use_batch>
+    <attributes/>
+    <GUI>
+      <xloc>1136</xloc>
+      <yloc>224</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Get LOG_ID</name>
+    <type>GetVariable</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <length>-1</length>
+        <name>v_LOG_ID</name>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <type>String</type>
+        <variable>${g_LOG_ID}</variable>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>128</xloc>
+      <yloc>32</yloc>
     </GUI>
   </transform>
   <transform_error_handling>
     <error>
-      <source_transform>Database lookup</source_transform>
+      <source_transform>Database lookup in ITEM_DESIGN</source_transform>
       <target_transform/>
       <is_enabled>Y</is_enabled>
       <nr_valuename/>

@@ -13,26 +13,21 @@
     <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
     <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
     <created_user>-</created_user>
-    <created_date>2025/12/24 06:01:24.946</created_date>
+    <created_date>2026/01/11 12:28:07.618</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2025/12/24 06:01:24.946</modified_date>
+    <modified_date>2026/01/11 12:28:07.618</modified_date>
   </info>
   <notepads>
   </notepads>
   <order>
     <hop>
-      <from>Generate rows</from>
-      <to>Generate random value</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Generate random value</from>
-      <to>Formula</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Formula</from>
+      <from>Get variables</from>
       <to>Write to log</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Generate rows</from>
+      <to>Get variables</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -48,21 +43,28 @@
       <schema_name/>
     </partitioning>
     <fields>
-</fields>
+      <field>
+        <length>-1</length>
+        <name>dummy</name>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+        <type>String</type>
+      </field>
+    </fields>
     <interval_in_ms>5000</interval_in_ms>
     <last_time_field>FiveSecondsAgo</last_time_field>
-    <limit>5</limit>
+    <limit>1</limit>
     <never_ending>N</never_ending>
     <row_time_field>now</row_time_field>
     <attributes/>
     <GUI>
-      <xloc>224</xloc>
-      <yloc>160</yloc>
+      <xloc>240</xloc>
+      <yloc>80</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>Generate random value</name>
-    <type>RandomValue</type>
+    <name>Get variables</name>
+    <type>GetVariable</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -73,19 +75,34 @@
     </partitioning>
     <fields>
       <field>
-        <name>champ1</name>
-        <type>random number</type>
+        <length>-1</length>
+        <name>c_status_running</name>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <type>String</type>
+        <variable>${c_STATUS_RUNNING}</variable>
       </field>
       <field>
-        <name>champ2</name>
-        <type>random number</type>
+        <length>-1</length>
+        <name>user.name</name>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <type>String</type>
+        <variable>${user.name}</variable>
+      </field>
+      <field>
+        <length>-1</length>
+        <name>test_log_id</name>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <type>Number</type>
+        <variable>${g_LOG_ID}</variable>
       </field>
     </fields>
-    <seed/>
     <attributes/>
     <GUI>
-      <xloc>368</xloc>
-      <yloc>160</yloc>
+      <xloc>416</xloc>
+      <yloc>80</yloc>
     </GUI>
   </transform>
   <transform>
@@ -101,43 +118,24 @@
     </partitioning>
     <displayHeader>Y</displayHeader>
     <fields>
-</fields>
+      <field>
+        <name>user.name</name>
+      </field>
+      <field>
+        <name>c_status_running</name>
+      </field>
+      <field>
+        <name>test_log_id</name>
+      </field>
+    </fields>
     <limitRows>N</limitRows>
     <limitRowsNumber>0</limitRowsNumber>
     <loglevel>Basic</loglevel>
     <logmessage/>
     <attributes/>
     <GUI>
-      <xloc>640</xloc>
-      <yloc>160</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>Formula</name>
-    <type>Formula</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <formulas>
-      <formula>
-        <field_name>result</field_name>
-        <formula>[champ1] > [champ2]</formula>
-        <replace_field/>
-        <set_na>N</set_na>
-        <value_length>-1</value_length>
-        <value_precision>-1</value_precision>
-        <value_type>4</value_type>
-      </formula>
-    </formulas>
-    <attributes/>
-    <GUI>
-      <xloc>512</xloc>
-      <yloc>160</yloc>
+      <xloc>576</xloc>
+      <yloc>80</yloc>
     </GUI>
   </transform>
   <transform_error_handling>

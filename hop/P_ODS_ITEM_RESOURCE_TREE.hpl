@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline>
+  <info>
+    <name>P_ODS_ITEM_RESOURCE_TREE</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description/>
+    <extended_description/>
+    <pipeline_version/>
+    <pipeline_type>Normal</pipeline_type>
+    <pipeline_status>0</pipeline_status>
+    <parameters>
+    </parameters>
+    <capture_transform_performance>N</capture_transform_performance>
+    <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
+    <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
+    <created_user>-</created_user>
+    <created_date>2026/01/09 07:39:10.017</created_date>
+    <modified_user>-</modified_user>
+    <modified_date>2026/01/09 07:39:10.017</modified_date>
+  </info>
+  <notepads>
+  </notepads>
+  <order>
+    <hop>
+      <from>ITEM_DESIGN</from>
+      <to>Truncate+insert ITEM_DEPENDENCIES</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
+  <transform>
+    <name>ITEM_DESIGN</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>astroneerdb-ods</connection>
+    <execute_each_row>N</execute_each_row>
+    <sql>WITH
+  item_list AS (
+    SELECT item_id,
+           COALESCE(item_name, title) AS item_name,
+           COALESCE(icon_src_url, img_src_url) AS item_icon
+    FROM item
+  ),
+  -- item -> resource (+ quantity)
+  item_edges AS (
+    SELECT d.item_id, d.resource_id, d.quantity
+    FROM item_design d
+  ),
+  -- récursif : on transporte aussi link_type et quantity (quantity seulement au 1er niveau)
+  tree (item_id, node_res_id, parent_id, depth, path, link_type, quantity) AS (
+    -- niveau 1 : ressources directes de l'item
+    SELECT
+      ie.item_id,
+      ie.resource_id                         AS node_res_id,
+      'i' || TO_CHAR(ie.item_id)             AS parent_id,
+      1                                      AS depth,
+      '/' || TO_CHAR(ie.resource_id) || '/'  AS path,
+      'ITEM'                                 AS link_type,
+      ie.quantity                            AS quantity
+    FROM item_edges ie
+    UNION ALL
+    -- niveaux suivants : ressource -> ressource
+    SELECT
+      t.item_id,
+      rd.child_res_id                        AS node_res_id,
+      TO_CHAR(rd.parent_res_id)              AS parent_id,
+      t.depth + 1                            AS depth,
+      t.path || TO_CHAR(rd.child_res_id) || '/',
+      rd.child_res_src                       AS link_type,   -- A / C1 / C2 / R
+      CAST(NULL AS NUMBER)                   AS quantity
+    FROM tree t
+    JOIN resource_dependencies rd
+      ON rd.parent_res_id = t.node_res_id
+    WHERE INSTR(t.path, '/' || TO_CHAR(rd.child_res_id) || '/') = 0
+      AND t.depth &lt; 5
+  ),
+  -- Dédup : une ressource = un seul noeud par item (on garde le chemin le plus court)
+  tree_dedup AS (
+    SELECT item_id, node_res_id, parent_id, depth, link_type, quantity
+    FROM (
+      SELECT
+        t.*,
+        ROW_NUMBER() OVER (
+          PARTITION BY t.item_id, t.node_res_id
+          ORDER BY t.depth
+        ) rn
+      FROM tree t
+    )
+    WHERE rn = 1
+  ),
+  json_rows AS (
+    -- racine item
+    SELECT
+      il.item_id,
+      'i' || TO_CHAR(il.item_id)               AS id,
+      il.item_name                             AS name,
+      CAST(NULL AS VARCHAR2(100))              AS parentId,
+      il.item_icon                             AS iconHref,
+      'ITEM'                                   AS nodeType,
+      CAST(NULL AS VARCHAR2(50))               AS resourceType,
+      CAST(NULL AS VARCHAR2(10))               AS linkType,
+      CAST(NULL AS NUMBER)                     AS quantity,
+      0                                        AS sort_depth
+    FROM item_list il
+    UNION ALL
+    -- noeuds ressources
+    SELECT
+      t.item_id,
+      TO_CHAR(t.node_res_id)                   AS id,
+      r.resource_name                          AS name,
+      t.parent_id                              AS parentId,
+      r.icon                                   AS iconHref,
+      'RESOURCE'                               AS nodeType,
+      r.resource_type                          AS resourceType,
+      t.link_type                              AS linkType,     -- ITEM / A / C1 / C2 / R
+      t.quantity                               AS quantity,     -- non null uniquement au niveau 1
+      t.depth                                  AS sort_depth
+    FROM tree_dedup t
+    JOIN resources r
+      ON r.resource_id = t.node_res_id
+  )
+  SELECT
+    item_id,
+    JSON_ARRAYAGG(
+      JSON_OBJECT(
+        'id'           VALUE id,
+        'name'         VALUE name,
+        'parentId'     VALUE parentId,
+        'iconHref'     VALUE iconHref,
+        'nodeType'     VALUE nodeType,
+        'resourceType' VALUE resourceType,
+        'linkType'     VALUE linkType,
+        'quantity'     VALUE quantity
+      )
+      ORDER BY sort_depth, id
+      RETURNING CLOB
+    ) AS tree_json
+  FROM json_rows
+  GROUP BY item_id</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>352</xloc>
+      <yloc>128</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Truncate+insert ITEM_DEPENDENCIES</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <add_columns>N</add_columns>
+    <always_drop_and_recreate>N</always_drop_and_recreate>
+    <auto_update_table_structure>N</auto_update_table_structure>
+    <change_column_types>N</change_column_types>
+    <commit>1000</commit>
+    <connection>astroneerdb-ods</connection>
+    <drop_columns>N</drop_columns>
+    <fields>
+      <field>
+        <column_name>ITEM_ID</column_name>
+        <stream_name>ITEM_ID</stream_name>
+      </field>
+      <field>
+        <column_name>TREE_JSON</column_name>
+        <stream_name>TREE_JSON</stream_name>
+      </field>
+    </fields>
+    <ignore_errors>N</ignore_errors>
+    <only_when_have_rows>N</only_when_have_rows>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <return_keys>N</return_keys>
+    <schema>ODS</schema>
+    <specify_fields>Y</specify_fields>
+    <table>ITEM_DEPENDENCIES</table>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_in_table>Y</tablename_in_table>
+    <truncate>Y</truncate>
+    <use_batch>Y</use_batch>
+    <attributes/>
+    <GUI>
+      <xloc>784</xloc>
+      <yloc>128</yloc>
+    </GUI>
+  </transform>
+  <transform_error_handling>
+  </transform_error_handling>
+  <attributes/>
+</pipeline>

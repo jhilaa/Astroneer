@@ -33,7 +33,7 @@
       <attributes_hac/>
     </action>
     <action>
-      <name>P_GET_LOG_ID.hpl</name>
+      <name>P_SET_LOG_ID.hpl</name>
       <description/>
       <type>PIPELINE</type>
       <attributes/>
@@ -43,7 +43,9 @@
       <clear_rows>N</clear_rows>
       <create_parent_folder>N</create_parent_folder>
       <exec_per_row>N</exec_per_row>
-      <filename>${PROJECT_HOME}/P_GET_LOG_ID.hpl</filename>
+      <filename>${PROJECT_HOME}/P_SET_LOG_ID.hpl</filename>
+      <logext/>
+      <logfile/>
       <loglevel>Basic</loglevel>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
@@ -126,8 +128,6 @@
       <create_parent_folder>N</create_parent_folder>
       <exec_per_row>N</exec_per_row>
       <filename>${PROJECT_HOME}/P_ODS_RESOURCE_ATMOSPHERIC.hpl</filename>
-      <logext/>
-      <logfile/>
       <loglevel>Basic</loglevel>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
@@ -171,7 +171,7 @@
   </actions>
   <hops>
     <hop>
-      <from>P_GET_LOG_ID.hpl</from>
+      <from>P_SET_LOG_ID.hpl</from>
       <to>P_INIT_LOG.hpl</to>
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
@@ -186,7 +186,7 @@
     </hop>
     <hop>
       <from>P_SET_CONSTANTS.hpl</from>
-      <to>P_GET_LOG_ID.hpl</to>
+      <to>P_SET_LOG_ID.hpl</to>
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
       <unconditional>N</unconditional>
